@@ -1,11 +1,8 @@
 package fauna.tool.logmonitor
 
 import fauna.tool.ast.Effect
-import fauna.tool.parser.JsonASTBuilder
 
-import java.sql.Timestamp
 import fauna.tool.ast.Expr
-import fauna.tool.parser.ASTBuilder
 
 trait Filter {
   def apply(entry: LogEntry, expr: Option[Expr]): Boolean
@@ -25,7 +22,6 @@ case class HttpErrorResponseFilter(hasError: Boolean) extends Filter {
 
 case class TimeStampFilter(startTs: String, endTs: Option[String]) extends Filter {
   import java.time.OffsetDateTime
-  import java.time.format.DateTimeFormatter._
 
   override def apply(entry: LogEntry, expr: Option[Expr]): Boolean = {
     val start = OffsetDateTime.parse(startTs)

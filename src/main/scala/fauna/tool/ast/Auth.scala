@@ -1,5 +1,4 @@
 package fauna.tool.ast
-import org.json4s.JsonAST.JValue
 
 import fauna.tool.parser.ASTBuilder
 

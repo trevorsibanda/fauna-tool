@@ -15,9 +15,7 @@ import fauna.tool.ast.{
   Undefined
 }
 import fastparse._
-import fauna.tool.parser.FQL.Argument
 
-import scala.io.Source
 import fauna.tool.parser.FQL.MethodCall
 
 class FQLBuilder extends ASTBuilder[String] {
@@ -49,7 +47,6 @@ class FQLBuilder extends ASTBuilder[String] {
 
 private class FQL_ASTBuilder extends ASTBuilder[Expr] {
 
-  import fauna.tool.parser.FQL.{ IndexedArgument, NamedArgument }
 
   def findBuilder(q: FQL.MethodCall): Option[(Builder, Accessors)] = {
     registered.collectFirst {

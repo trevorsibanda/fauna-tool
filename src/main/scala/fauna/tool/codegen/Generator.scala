@@ -22,8 +22,6 @@ import fauna.tool.parser.ASTBuilder
 import fauna.tool.ast.UnknownExpression
 
 import com.typesafe.scalalogging.Logger
-import fauna.tool.ast.ObjectExpr
-import java.security.Timestamp
 import scala.util.Try
 
 case class GeneratorException(msg: String) extends Exception(msg)

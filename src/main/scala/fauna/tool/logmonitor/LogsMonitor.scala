@@ -4,17 +4,14 @@ import fauna.tool.AppConfig
 import fauna.tool.ast.Effect
 
 import scala.io.Source
-import java.sql.Timestamp
 import org.json4s._
 import org.json4s.native.JsonMethods._
-import com.fasterxml.jackson.databind.ser.FilterProvider
 import fauna.tool.codegen.Generator
 
 import org.apache.commons.io.input.{ Tailer, TailerListenerAdapter }
 import scala.collection.mutable
 import scala.concurrent.Future
 
-import fansi._
 
 import com.typesafe.scalalogging.Logger
 
@@ -255,8 +252,8 @@ object LogsMonitor {
       if (entry.request.body != JNothing)
         s"[  raw  ] ${compact(render(entry.request.body))}"
       else ""
-    val auth = s"[  auth  ]   $qry"
-    val stats = s"[  stats ]    "
+    s"[  auth  ]   $qry"
+    s"[  stats ]    "
     val msg = s"$req\n$raw\n$qry\n\n"
     println(msg)
   }

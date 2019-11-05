@@ -2,7 +2,6 @@ package fauna.tool.ast
 
 import fauna.tool.parser.ASTBuilder
 
-import org.json4s.JsonAST.JValue
 
 //conversion
 case class ToString(to_string: Expr) extends FnExpr {

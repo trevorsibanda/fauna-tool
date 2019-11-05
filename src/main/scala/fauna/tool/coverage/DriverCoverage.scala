@@ -14,8 +14,6 @@ import fauna.tool.logmonitor.{
   LogsMonitorConfig
 }
 
-import org.apache.commons.io.input.{ Tailer }
-import org.apache.commons.io.input.TailerListener
 import scala.concurrent.Future
 
 class DriverCoverage(config: CoverageConfig) {

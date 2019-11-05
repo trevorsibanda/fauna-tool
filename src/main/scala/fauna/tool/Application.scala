@@ -1,17 +1,9 @@
 package fauna.tool
 
-import scala.io.Source
-import fauna.tool.ast.{ Expr }
-import java.security.Timestamp
 
-import scopt.OParser
-
-import fauna.tool.logmonitor.{ HttpErrorResponseFilter, TimeStampFilter }
 import fauna.tool.logmonitor.{ LogsMonitor, LogsMonitorConfig }
 import fauna.tool.codegen.{ CodeGenConfig, Generator }
 import fauna.tool.coverage.CoverageConfig
-
-import fauna.tool.codegen.{ CurlGenerator, JSCodeGenerator }
 import fauna.tool.coverage.Coverage
 
 case class AppConfig(

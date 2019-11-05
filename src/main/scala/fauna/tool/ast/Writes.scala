@@ -2,7 +2,6 @@ package fauna.tool.ast
 
 import fauna.tool.parser.ASTBuilder
 
-import org.json4s.JsonAST.JValue
 
 //writes
 case class Create(create: Expr, params: Option[Expr]) extends FnExpr {

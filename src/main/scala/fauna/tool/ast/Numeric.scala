@@ -2,11 +2,8 @@ package fauna.tool.ast
 
 import fauna.tool.parser.ASTBuilder
 
-import org.json4s.JsonAST.JValue
 
-import fauna.tool.ast.{ NumericL }
 import fauna.tool.validator.Constraint
-import fauna.tool.validator.{ ValidationError, ValidationSuccess }
 
 //Numerics
 case class Abs(abs: Expr) extends FnExpr {

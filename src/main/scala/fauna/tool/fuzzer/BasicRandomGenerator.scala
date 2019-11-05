@@ -1,6 +1,6 @@
 package fauna.tool.fuzzer
 
-import fauna.tool.ast.{ Arity, Effect, Expr, Literal }
+import fauna.tool.ast.{ Arity, Expr, Literal }
 
 class BasicRandGen(allExprs: Seq[Expr]) extends RandomGenerator {
   def randomLiteral: Literal = ???
