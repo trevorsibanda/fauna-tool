@@ -81,15 +81,18 @@ class DriverCoverage(config: CoverageConfig) {
 
   def showResults() = {
     println("Coverage results:\n===========================\n")
-    hitCounter.keySet.map{driver: String => {
-      if(driver != "unknown" && !config.verboseReport){
-        println(s" $driver DRIVER:\n----------------\n")
-        hitCounter(driver).foreach(tpl => 
-          if(tpl._2 <= 0)
-            println(s"${tpl._1} has not hits")
-        )
+    hitCounter.keySet.map { driver: String =>
+      {
+        if (driver != "unknown" && !config.verboseReport) {
+          println(s" $driver DRIVER:\n----------------\n")
+          hitCounter(driver).foreach(
+            tpl =>
+              if (tpl._2 <= 0)
+                println(s"${tpl._1} has not hits")
+          )
+        }
       }
-    }}
+    }
   }
 
   def logsMonConfig: LogsMonitorConfig =

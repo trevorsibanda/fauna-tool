@@ -2,7 +2,6 @@ package fauna.tool.ast
 
 import fauna.tool.parser.ASTBuilder
 
-
 //string
 case class Concat(concat: Expr, separator: Option[Expr]) extends FnExpr {
 

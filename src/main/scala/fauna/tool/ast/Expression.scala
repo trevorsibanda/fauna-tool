@@ -2,7 +2,6 @@ package fauna.tool.ast
 
 import fauna.tool.parser.ASTBuilder
 
-
 trait FnExpr extends Expr
 
 case class Array(l: List[Expr]) extends Literal {

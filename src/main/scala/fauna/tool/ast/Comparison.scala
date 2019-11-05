@@ -2,7 +2,6 @@ package fauna.tool.ast
 
 import fauna.tool.parser.ASTBuilder
 
-
 //Comparison
 case class LT(lt: Expr) extends FnExpr {
 

@@ -2,7 +2,6 @@ package fauna.tool.ast
 
 import fauna.tool.parser.ASTBuilder
 
-
 // Native classref constructors
 case class Databases(databases: Expr) extends FnExpr {
 

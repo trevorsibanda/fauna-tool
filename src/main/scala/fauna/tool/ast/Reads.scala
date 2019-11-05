@@ -2,7 +2,6 @@ package fauna.tool.ast
 
 import fauna.tool.parser.ASTBuilder
 
-
 //reads
 case class Exists(exists: Expr, ts: Option[Expr]) extends FnExpr {
 

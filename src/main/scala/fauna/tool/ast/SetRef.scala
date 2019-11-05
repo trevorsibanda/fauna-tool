@@ -2,7 +2,6 @@ package fauna.tool.ast
 
 import fauna.tool.parser.ASTBuilder
 
-
 // Set ref constructors
 case class Singleton(singleton: Expr) extends FnExpr {
 

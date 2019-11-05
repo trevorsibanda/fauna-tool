@@ -2,7 +2,6 @@ package fauna.tool.ast
 
 import fauna.tool.parser.ASTBuilder
 
-
 //time and date
 
 case class Time(time: Expr) extends FnExpr {

@@ -1,6 +1,5 @@
 package fauna.tool
 
-
 import fauna.tool.logmonitor.{ LogsMonitor, LogsMonitorConfig }
 import fauna.tool.codegen.{ CodeGenConfig, Generator }
 import fauna.tool.coverage.CoverageConfig

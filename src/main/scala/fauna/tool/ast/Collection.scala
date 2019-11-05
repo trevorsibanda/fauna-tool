@@ -3,7 +3,6 @@ package fauna.tool.ast
 import fauna.tool.ast.Expr
 import fauna.tool.parser.ASTBuilder
 
-
 //collection
 case class Prepend(prepend: Expr, collection: Expr) extends FnExpr {
 

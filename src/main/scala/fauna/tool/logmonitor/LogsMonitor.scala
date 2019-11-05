@@ -12,7 +12,6 @@ import org.apache.commons.io.input.{ Tailer, TailerListenerAdapter }
 import scala.collection.mutable
 import scala.concurrent.Future
 
-
 import com.typesafe.scalalogging.Logger
 
 case class APIRequest(

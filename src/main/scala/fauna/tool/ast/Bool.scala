@@ -2,7 +2,6 @@ package fauna.tool.ast
 
 import fauna.tool.parser.ASTBuilder
 
-
 //bool
 case class And(and: Expr) extends FnExpr {
 

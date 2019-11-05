@@ -2,7 +2,6 @@ package fauna.tool.ast
 
 import fauna.tool.parser.ASTBuilder
 
-
 import fauna.tool.validator.Constraint
 
 //Numerics

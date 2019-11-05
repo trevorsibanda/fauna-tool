@@ -47,7 +47,6 @@ class FQLBuilder extends ASTBuilder[String] {
 
 private class FQL_ASTBuilder extends ASTBuilder[Expr] {
 
-
   def findBuilder(q: FQL.MethodCall): Option[(Builder, Accessors)] = {
     registered.collectFirst {
       case (name, Arity.Exact(n), acc, builder)

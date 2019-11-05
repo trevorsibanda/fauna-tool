@@ -2,7 +2,6 @@ package fauna.tool.ast
 
 import fauna.tool.parser.ASTBuilder
 
-
 //trig
 case class ACos(acos: Expr) extends FnExpr {
 
