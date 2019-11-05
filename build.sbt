@@ -8,7 +8,13 @@ ThisBuild / organizationName := "fauna-tool"
 lazy val root = (project in file("."))
   .settings(
     name := "fauna-tool",
-    libraryDependencies ++= Seq(scalaTest % Test, scalaReflect, json4sNative, scalaMeter, fansi, apacheCommonsIO, scOpt, scalaLogging, fastParse, slf4jApi, slf4jSimple)
+    libraryDependencies ++= Seq(scalaTest % Test, scalaReflect, json4sNative, scalaMeter, fansi, apacheCommonsIO, scOpt, scalaLogging, fastParse, slf4jApi, slf4jSimple),
+    addCompilerPlugin(scalafixSemanticdb), // enable SemanticDB
+    scalacOptions ++= List(
+    "-Yrangepos",          // required by SemanticDB compiler plugin
+    "-Ywarn-unused" // required by `RemoveUnused` rule
+   )
   )
+
 
 // See https://www.scala-sbt.org/1.x/docs/Using-Sonatype.html for instructions on how to publish to Sonatype.
