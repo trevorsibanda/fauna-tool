@@ -7,7 +7,7 @@ fauna-tool v0.1.0 [![Build Status]][travis-url]
 ![LandingExample](docs/usage.png)
 
 
-fauna-tool is a Scala based program nitially built to only reverse engineer the wire protocol to an easier to read language specific FQL syntax, it also allows monitoring of faunadb log files with the ability to apply filters for narrower searches.
+fauna-tool is a Scala based program intially built to only reverse engineer the wire protocol to an easier to read language specific FQL syntax, it also allows monitoring of faunadb log files with the ability to apply filters for narrower searches.
 
 A fuzzer and coverage command feature are also included to generate random queries with specificed constraints and runs driver coverage tests respectively.
 
