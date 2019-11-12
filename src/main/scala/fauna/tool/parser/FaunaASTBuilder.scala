@@ -57,7 +57,22 @@ private class FQL_ASTBuilder extends ASTBuilder[Expr] {
         (builder, acc, Arity.VarArgs)
       case (name, Arity.Between(min, max), acc, builder)
           if (q.name == name && q.arguments.size >= min && q.arguments.size <= max) =>
-        (builder, acc)
+        (builder, acc, Arity.Between(min, max))
+      case (name, _, acc, _) if q.name == name => {
+        val expected = acc.map { tpl =>
+          if (tpl._2) s"*${tpl._1}" else s"${tpl._1}"
+        }
+        val received = expected
+          .zip(q.arguments)
+          .map { tpl =>
+            s"${tpl._1} -> ${tpl._2}"
+          }
+          .mkString(" , ")
+        val msg =
+          s"Number of arguments for ${q.name} does not match.\n Expected: ${q.name}(${expected
+            .mkString(" ,")})\n Got: ${q.name}($received) "
+        throw new Exception(msg)
+      }
     }
   }
 
