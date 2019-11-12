@@ -22,11 +22,11 @@ object Application {
 
     cmd("logs")
       .children(LogsMonitor.parserOpts(self): _*)
-      .action((x, c) => { c.copy(command = "logs") })
+      .action((_, c) => { c.copy(command = "logs") })
 
     cmd("code")
       .children(Generator.parserOpts(self): _*)
-      .action((x, c) => { c.copy(command = "code") })
+      .action((_, c) => { c.copy(command = "code") })
 
     cmd("fuzzer").hidden()
 
@@ -34,7 +34,7 @@ object Application {
 
     cmd("coverage")
       .children(Coverage.parserOpts(self): _*)
-      .action((x, c) => { c.copy(command = "coverage") })
+      .action((_, c) => { c.copy(command = "coverage") })
   }
 
   def main(args: Array[String]) = {
