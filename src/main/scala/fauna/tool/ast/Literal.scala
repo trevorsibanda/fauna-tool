@@ -59,3 +59,7 @@ case class ArrayL(l: List[Expr]) extends Literal {
       }
   }
 }
+
+object ArrayL {
+  def apply(literals: Expr*): ArrayL = ArrayL(literals.toList)
+}
