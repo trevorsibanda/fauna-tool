@@ -27,7 +27,7 @@ abstract class Expr extends Product {
       (field.getName().replace("$at", "@"), field.getType.getName == "scala.Option")
   }
 
-  val arity: Arity = {
+  def arity: Arity = {
     var args, optional: Int = 0
     classAccessors map {
       case (_, true)  => optional += 1; args += 1
