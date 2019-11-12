@@ -26,16 +26,16 @@ abstract class ASTBuilder[T] {
   @volatile
   var registered: Array[(String, Arity, Accessors, Builder)] = Array()
 
-  def matchKeys(value: T, classAccessors: Accessors): Boolean = ???
+  def matchKeys(value: T, classAccessors: Accessors): Boolean
 
-  def build(value: T): Expr = ???
+  def build(value: T): Expr
 
   def buildChild(parent: T, childName: String): Expr
 
   def buildChildOpt(parent: T, childName: String): Option[Expr]
 
-  def buildOpt(value: T): Option[Expr] = ???
+  def buildOpt(value: T): Option[Expr]
 
-  def extractLiteral(value: T): Literal = ???
+  def extractLiteral(value: T): Literal
 
 }
