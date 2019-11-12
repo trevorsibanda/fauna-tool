@@ -45,7 +45,7 @@ class FQLBuilder extends ASTBuilder[String] {
   def parseT(s: String): Expr = fastparse.parse(s, FQL.EXPRESSION(_)).get.value
 }
 
-private class FQL_ASTBuilder extends ASTBuilder[Expr] {
+private[parser] class FQL_ASTBuilder extends ASTBuilder[Expr] {
 
   def findBuilder(q: FQL.MethodCall): Option[(Builder, Accessors, Arity)] = {
     registered.collectFirst {
@@ -152,7 +152,7 @@ private class FQL_ASTBuilder extends ASTBuilder[Expr] {
 
 }
 
-private object FQL {
+private[parser] object FQL {
   abstract class Argument(val value: Expr) {}
 
   case class IndexedArgument(i: Int, override val value: Expr)
