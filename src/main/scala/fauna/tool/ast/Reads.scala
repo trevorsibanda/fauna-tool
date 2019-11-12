@@ -123,3 +123,41 @@ case class PaginateAfter(
   )
 
 }
+
+case class Select(select: Expr, from: Expr, default: Option[Expr]) extends FnExpr {
+
+  override def build[T](value: T)(implicit bf: ASTBuilder[T]): Expr =
+    Select(
+      bf.buildChild(value, "select"),
+      bf.buildChild(value, "from"),
+      bf.buildChildOpt(value, "default")
+    )
+
+  override def effect: Effect = effect(Effect.Read)
+}
+
+case class SelectAll(select_all: Expr, from: Expr, default: Option[Expr])
+    extends FnExpr {
+
+  override def build[T](value: T)(implicit bf: ASTBuilder[T]): Expr =
+    SelectAll(
+      bf.buildChild(value, "select_all"),
+      bf.buildChild(value, "from"),
+      bf.buildChildOpt(value, "default")
+    )
+
+  override def effect: Effect = effect(Effect.Read)
+}
+
+case class SelectAsIndex(select_as_index: Expr, from: Expr, default: Option[Expr])
+    extends FnExpr {
+
+  override def build[T](value: T)(implicit bf: ASTBuilder[T]): Expr =
+    SelectAsIndex(
+      bf.buildChild(value, "select_as_index"),
+      bf.buildChild(value, "from"),
+      bf.buildChildOpt(value, "default")
+    )
+
+  override def effect: Effect = effect(Effect.Read)
+}

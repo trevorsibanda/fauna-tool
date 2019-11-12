@@ -39,3 +39,49 @@ case class IsNonEmpty(is_nonempty: Expr) extends FnExpr {
   override def build[T](value: T)(implicit bf: ASTBuilder[T]): Expr =
     IsNonEmpty(bf.buildChild(value, "is_nonempty"))
 }
+
+case class Merge(merge: Expr, `with`: Expr, lambda: Option[Expr]) extends Expr {
+
+  override def build[T](value: T)(implicit bf: ASTBuilder[T]): Expr =
+    Merge(
+      bf.buildChild(value, "merge"),
+      bf.buildChild(value, "with"),
+      bf.buildChildOpt(value, "lambda")
+    )
+}
+
+case class Reduce(reduce: Expr, initial: Expr, collection: Expr) extends Expr {
+
+  override def build[T](value: T)(implicit bf: ASTBuilder[T]): Expr =
+    Reduce(
+      bf.buildChild(value, "reduce"),
+      bf.buildChild(value, "initial"),
+      bf.buildChild(value, "collection")
+    )
+}
+
+case class ForEach(foreach: Expr, collection: Expr) extends Expr {
+
+  override def build[T](value: T)(implicit bf: ASTBuilder[T]): Expr =
+    ForEach(bf.buildChild(value, "foreach"), bf.buildChild(value, "collection"))
+}
+
+case class Filter(filter: Expr, collection: Expr) extends Expr {
+
+  override def build[T](value: T)(implicit bf: ASTBuilder[T]): Expr =
+    Filter(bf.buildChild(value, "filter"), bf.buildChild(value, "collection"))
+}
+
+case class MapFn(collection: Expr, map: Expr) extends Expr {
+
+  override def build[T](value: T)(implicit bf: ASTBuilder[T]): Expr =
+    MapFn(bf.buildChild(value, "collection"), bf.buildChild(value, "map"))
+
+  override def name: String = "Map"
+}
+
+case class Join(join: Expr, `with`: Expr) extends Expr {
+
+  override def build[T](value: T)(implicit bf: ASTBuilder[T]): Expr =
+    Join(bf.buildChild(value, "join"), bf.buildChild(value, "with"))
+}

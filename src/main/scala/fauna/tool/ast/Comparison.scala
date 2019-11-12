@@ -26,3 +26,15 @@ case class GTE(gte: Expr) extends FnExpr {
   override def build[T](value: T)(implicit bf: ASTBuilder[T]): Expr =
     GTE(bf.buildChild(value, "gte"))
 }
+
+case class Equals(equals: Expr) extends FnExpr {
+
+  override def build[T](value: T)(implicit bf: ASTBuilder[T]): Expr =
+    Equals(bf.buildChild(value, "equals"))
+}
+
+case class Contains(contains: Expr, in: Expr) extends FnExpr {
+
+  override def build[T](value: T)(implicit bf: ASTBuilder[T]): Expr =
+    Contains(bf.buildChild(value, "contains"), bf.buildChild(value, "in"))
+}
