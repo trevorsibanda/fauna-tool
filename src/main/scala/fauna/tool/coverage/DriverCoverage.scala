@@ -20,15 +20,10 @@ class DriverCoverage(config: CoverageConfig) {
 
   private val logger = Logger("driver-coverage")
 
-  val followDelayMs: Long = 250
-
-  val file = "/dev/shm/fauna-api-test/api-1/log/query.log"
-  val logFile = new java.io.File(file)
-
-  def driverTargets: Seq[String] =
-    Seq("unknown") ++ (if (!config.exclude.isEmpty)
-                         config.exclude.diff(config.include)
-                       else config.include)
+  val driverTargets: Seq[String] =
+    (if (config.exclude.isEmpty)
+       config.include
+     else config.include.diff(config.exclude)) :+ "other"
 
   private val hitCounter: immutable.Map[String, mutable.Map[String, Int]] =
     driverTargets.map { s: String =>
@@ -55,7 +50,7 @@ class DriverCoverage(config: CoverageConfig) {
   }
 
   def addHit(driver: String, expr: Expr) = {
-    val entry = hitCounter.getOrElse(driver, hitCounter("unknown"))
+    val entry = hitCounter.getOrElse(driver, hitCounter("other"))
     val count = entry.getOrElseUpdate(expr.name, -1)
     entry.update(expr.name, count + 1)
   }
@@ -81,25 +76,46 @@ class DriverCoverage(config: CoverageConfig) {
 
   def showResults() = {
     println("Coverage results:\n===========================\n")
-    hitCounter.keySet.map { driver: String =>
-      {
-        if (driver != "unknown" && !config.verboseReport) {
-          println(s" $driver DRIVER:\n----------------\n")
-          hitCounter(driver).foreach(
-            tpl =>
-              if (tpl._2 <= 0)
-                println(s"${tpl._1} has not hits")
-          )
-        }
-      }
+    driverTargets.map { driver: String =>
+      val uniqueHits: Double = hitCounter(driver).values.filter(_ > 0).size
+      val totalExprs: Double = hitCounter(driver).size
+      val percent = 100.0 * (uniqueHits / totalExprs)
+      val pbar = (0 to percent.toInt)
+        .map(i => fansi.Back.True(0, (127 + (i * 1.28)).toInt, 0)(" "))
+        .mkString
+      val npbar = (0 until 100 - percent.toInt)
+        .map(i => fansi.Back.True(255, 0, 0)(" "))
+        .mkString
+      println(
+        s"${driver.toUpperCase.padTo(10, ' ')}  ${pbar}${npbar}  ${percent.ceil}% cov \n"
+      )
+      if (config.verboseReport || driverTargets.length == 1)
+        detailedReport(driver, hitCounter(driver))
+      println("\n\n")
     }
+  }
+
+  def detailedReport(driver: String, counter: mutable.Map[String, Int]): Unit = {
+    val noHits = counter.collect {
+      case (fn: String, count: Int) if count <= 0 => fn
+    }
+    val totalHits = counter.values.sum
+    val maxHits = counter.values.max
+    val mostFrequent = counter
+      .collect {
+        case (fn: String, count: Int) if count >= maxHits => fn
+      }
+      .mkString(" ,")
+    println(s"Statements Invoked:\t\t\t$totalHits")
+    println(s"Most Frequent Expr:\t\t$mostFrequent")
+    println(s"Not Invoked       :\t\t${noHits.mkString(", ")}")
   }
 
   def logsMonConfig: LogsMonitorConfig =
     new LogsMonitorConfig(logFile = config.logFile, follow = config.liveTarget)
 
   def processEntry(entry: LogEntry, expr: Expr, codegen: Generator) = {
-    val driver = entry.driver.getOrElse("unknown").toLowerCase
+    val driver = entry.driver.getOrElse("other").toLowerCase
     expr.forEachChildren((e: Expr) => {
       addHit(driver, e)
     })
