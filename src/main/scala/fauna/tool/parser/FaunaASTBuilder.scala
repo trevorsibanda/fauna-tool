@@ -47,14 +47,14 @@ class FQLBuilder extends ASTBuilder[String] {
 
 private class FQL_ASTBuilder extends ASTBuilder[Expr] {
 
-  def findBuilder(q: FQL.MethodCall): Option[(Builder, Accessors)] = {
+  def findBuilder(q: FQL.MethodCall): Option[(Builder, Accessors, Arity)] = {
     registered.collectFirst {
       case (name, Arity.Exact(n), acc, builder)
           if (q.name == name && q.arguments.size == n) =>
-        (builder, acc)
+        (builder, acc, Arity.Exact(n))
       case (name, Arity.VarArgs, acc, builder)
           if (q.name == name && q.arguments.length >= 1) =>
-        (builder, acc)
+        (builder, acc, Arity.VarArgs)
       case (name, Arity.Between(min, max), acc, builder)
           if (q.name == name && q.arguments.size >= min && q.arguments.size <= max) =>
         (builder, acc)
@@ -97,20 +97,26 @@ private class FQL_ASTBuilder extends ASTBuilder[Expr] {
     case l: Literal => l
   }
 
-  def paramToIndex(q: FQL.MethodCall, param: String): Option[Int] = {
+  def paramToIndex(
+    param: String,
+    builder: Option[(Builder, Accessors, Arity)]
+  ): Option[Int] = {
     val d: Option[Int] = None
-    findBuilder(q).fold(d) {
-      case (b: Builder, acc: Accessors) => {
+    builder.fold(d) {
+      case (_: Builder, acc: Accessors, _: Arity) => {
         val i = acc.indexWhere(_._1 == param)
         if (i == -1) None else Some(i)
       }
     }
   }
 
-  def indexToParam(q: FQL.MethodCall, i: Int): Option[String] = {
+  def indexToParam(
+    i: Int,
+    builder: Option[(Builder, Accessors, Arity)]
+  ): Option[String] = {
     val d: Option[String] = None
-    findBuilder(q).fold(d) {
-      case (b: Builder, acc: Accessors) => {
+    builder.fold(d) {
+      case (_: Builder, acc: Accessors, _: Arity) => {
         if (i <= acc.size) Some(acc(i)._1) else None
       }
     }
@@ -119,9 +125,14 @@ private class FQL_ASTBuilder extends ASTBuilder[Expr] {
   def readArgument(q: FQL.MethodCall, param: String): Option[Expr] = {
 
     val accum: Option[Expr] = None
-    paramToIndex(q, param).fold(accum)((idx: Int) => {
-      if (idx < q.arguments.length) Some(q.arguments(idx)) else None
-    })
+    val builder: Option[(Builder, Accessors, Arity)] = findBuilder(q)
+    builder match {
+      case Some((_, _, Arity.VarArgs)) => Some(ArrayL(q.arguments.toList))
+      case _ =>
+        paramToIndex(param, builder).fold(accum)((idx: Int) => {
+          if (idx < q.arguments.length) Some(q.arguments(idx)) else None
+        })
+    }
   }
 
 }

@@ -102,6 +102,12 @@ trait Generator {
           case Some(x) => exprToCode(x)
         }
         .mkString(s"${e.name}(", ",", ")")
+    case e: Expr if e.arity == Arity.VarArgs =>
+      e.children
+        .map {
+          case Some(x) => exprToCode(x)
+        }
+        .mkString(s"${e.name}(", ",", ")")
 
   }
 

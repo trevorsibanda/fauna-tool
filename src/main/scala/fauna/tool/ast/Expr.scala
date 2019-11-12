@@ -42,7 +42,8 @@ abstract class Expr extends Product {
         yield Some(elem)
     case Arity.VarArgs =>
       this.productElement(0).asInstanceOf[Expr] match {
-        case Array(l) => l.map(Some(_))
+        case ArrayL(l) => l.map(Some(_))
+        case x         => Seq(Some(ArrayL(x)))
       }
     case Arity.Between(min, max) => {
       val required: Seq[Option[Expr]] =
@@ -125,8 +126,12 @@ object Expr {
     knownExprs.map(_.register()(bf))
   }
 
-  def toJson(e: Expr) = e match {
+  def toJson(e: Expr): JValue = e match {
     case l: Literal => literalToJson(l)
+    case e: Expr if e.arity == Arity.VarArgs =>
+      JObject(JField(e.classAccessors.head._1, JArray(e.children.collect {
+        case Some(x) => toJson(x)
+      }.toList)))
     case e: Expr =>
       JObject(e.classAccessors.zip(e.children).collect {
         case (ca, Some(expr)) => JField(ca._1, expr.toJson)
