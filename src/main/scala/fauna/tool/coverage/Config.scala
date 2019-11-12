@@ -7,6 +7,7 @@ case class CoverageConfig(
   val generateHTMLReport: Boolean = true,
   val verboseReport: Boolean = false,
   val htmlReportFile: String = "",
-  val include: Seq[String] = Seq("go", "js", "scala", "java", "ruby", "python", "c#"),
+  val include: Seq[String] =
+    Seq("javascript", "java", "scala", "go", "python", "ruby", "c#"),
   val exclude: Seq[String] = Seq()
 )
