@@ -73,6 +73,8 @@ case class CreateKey(create_key: Expr) extends FnExpr {
   override def build[T](value: T)(implicit bf: ASTBuilder[T]): Expr = {
     CreateKey(bf.buildChild(value, "create_key"))
   }
+
+  override def effect: Effect = effect(Effect.Write)
 }
 
 case class CreateFunction(create_function: Expr) extends FnExpr {
