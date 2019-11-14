@@ -83,7 +83,7 @@ private[parser] class FQL_ASTBuilder extends ASTBuilder[Expr] {
       val d: Expr = Undefined
       findBuilder(q).fold(d)(_._1(q))
     }
-    case l: Literal => l
+    case l: Literal => extractLiteral(l)
     case v: Expr    => v
   }
 
@@ -99,7 +99,7 @@ private[parser] class FQL_ASTBuilder extends ASTBuilder[Expr] {
         case Some(mc) =>
           mc match {
             case c: MethodCall => Some(this.build(c))
-            case _             => Some(mc)
+            case _             => Some(build(mc))
           }
         case None => None
       }
@@ -109,6 +109,8 @@ private[parser] class FQL_ASTBuilder extends ASTBuilder[Expr] {
   override def buildOpt(value: Expr): Option[Expr] = ???
 
   override def extractLiteral(value: Expr): Literal = value match {
+    case ArrayL(l)  => ArrayL(l.map(build))
+    case ObjectL(m) => ObjectL(m.map(tpl => (tpl._1, build(tpl._2))))
     case l: Literal => l
   }
 
