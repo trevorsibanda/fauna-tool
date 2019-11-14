@@ -10,9 +10,11 @@ class JSCodeGenerator extends Generator {
 
   override def exprToCode(expr: Expr): Code = expr match {
     case ObjectExpr(obj) => exprToCode(obj)
-    case ap: PaginateAfter => {
-      val params = Map(
+    case ap: Paginate => {
+      val params: Map[String, Expr] = Map(
         "after" -> ap.after,
+        "before" -> ap.before,
+        "cursor" -> ap.cursor,
         "ts" -> ap.ts,
         "size" -> ap.size,
         "events" -> ap.events,
@@ -20,34 +22,10 @@ class JSCodeGenerator extends Generator {
       ).collect {
         case (k: String, Some(v)) => (k, v)
       }.toMap
-      val obj = ObjectL(params)
-      s"Paginate(${exprToCode(ap.paginate)}, ${exprToCode(obj)})"
-    }
-    case ap: PaginateBefore => {
-      val params = Map(
-        "before" -> Some(ap.before),
-        "ts" -> ap.ts,
-        "size" -> ap.size,
-        "events" -> ap.events,
-        "sources" -> ap.sources
-      ).collect {
-        case (k: String, Some(v)) => (k, v)
-      }.toMap
-      val obj = ObjectL(params)
-      s"Paginate(${exprToCode(ap.paginate)}, ${exprToCode(obj)})"
-    }
-    case ap: PaginateCursor => {
-      val params = Map(
-        "cursor" -> Some(ap.cursor),
-        "ts" -> ap.ts,
-        "size" -> ap.size,
-        "events" -> ap.events,
-        "sources" -> ap.sources
-      ).collect {
-        case (k: String, Some(v)) => (k, v)
-      }.toMap
-      val obj = ObjectL(params)
-      s"Paginate(${exprToCode(ap.paginate)}, ${exprToCode(obj)})"
+      if (params.isEmpty)
+        s"Paginate(${exprToCode(ap.paginate)})"
+      else
+        s"Paginate(${exprToCode(ap.paginate)}, ${exprToCode(ObjectL(params))})"
     }
     case _ => super.exprToCode(expr)
   }
