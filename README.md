@@ -1,4 +1,4 @@
-fauna-tool v0.1.0 [![Build Status]][travis-url] 
+fauna-tool v0.1.0 [![Build Status]][travis-url] [![codecov](https://codecov.io/gh/trevorsibanda/fauna-tool/branch/master/graph/badge.svg)](https://codecov.io/gh/trevorsibanda/fauna-tool)
 ======================================================================
 [Build Status]: https://travis-ci.org/trevorsibanda/fauna-tool.svg
 [travis-url]: https://travis-ci.org/trevorsibanda/fauna-tool
