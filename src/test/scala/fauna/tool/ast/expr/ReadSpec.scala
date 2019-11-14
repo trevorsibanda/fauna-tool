@@ -6,7 +6,6 @@ class ReadFunctionsSpec extends ExprSuite {
 
   test("Exists()") {
     val expr = Exists(exists = NullL, ts = Some(NullL))
-    val json = """{exists: Expr, ts: Option[Expr]}"""
 
     assertExpr(expr, "Exists", 2, Arity.Between(1, 2), Effect.Read)
 
@@ -27,7 +26,6 @@ class ReadFunctionsSpec extends ExprSuite {
 
   test("Get()") {
     val expr = Get(get = NullL, ts = Some(NullL))
-    val json = """{get: Expr, ts: Option[Expr]}"""
 
     assertExpr(expr, "Get", 2, Arity.Between(1, 2), Effect.Read)
 
@@ -48,7 +46,6 @@ class ReadFunctionsSpec extends ExprSuite {
 
   test("KeyFromSecret()") {
     val expr = KeyFromSecret(key_from_secret = NullL)
-    val json = """{key_from_secret: Expr}"""
 
     assertExpr(expr, "KeyFromSecret", 1, Arity.Exact(1), Effect.Read)
 
