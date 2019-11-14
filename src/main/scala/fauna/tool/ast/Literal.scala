@@ -18,6 +18,8 @@ case class ObjectExpr(`object`: Expr) extends Expr {
 
 case class ObjectL(m: Map[String, Expr]) extends Literal {
   override def evaluatesTo: Type = ObjectT
+
+  override def children: Seq[Option[Expr]] = m.values.map(Some(_)).toSeq
 }
 
 case class StringL(s: String) extends Literal {
@@ -58,6 +60,8 @@ case class ArrayL(l: List[Expr]) extends Literal {
         case (t1, t2) => t1 + t2
       }
   }
+
+  override def children: Seq[Option[Expr]] = l.map(Some(_))
 }
 
 object ArrayL {

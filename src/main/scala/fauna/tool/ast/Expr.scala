@@ -64,7 +64,7 @@ abstract class Expr extends Product {
     }
   }
 
-  def contains(e: Expr, pred: Expr => Boolean) = Expr.contains(this, e)()
+  def contains(e: Expr, pred: Expr => Boolean) = Expr.contains(this, e)(pred)
 
   def register[T]()(implicit bf: ASTBuilder[T]) =
     bf.register(name, arity, classAccessors, build)
@@ -307,8 +307,6 @@ object Expr {
     //abstract class AbstractMatch(`match`: Expr, index: Option[Expr], terms: Option[Expr]) extends FnExpr
     ,
     Match(NullL),
-    MatchIndex(NullL, NullL),
-    MatchTerms(NullL, NullL),
     Union(NullL),
     Intersection(NullL),
     Difference(NullL),

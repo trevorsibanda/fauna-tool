@@ -19,12 +19,16 @@ case class GT(gt: Expr) extends FnExpr {
 
   override def build[T](value: T)(implicit bf: ASTBuilder[T]): Expr =
     GT(bf.buildChild(value, "gt"))
+
+  override def arity: Arity = Arity.VarArgs
 }
 
 case class GTE(gte: Expr) extends FnExpr {
 
   override def build[T](value: T)(implicit bf: ASTBuilder[T]): Expr =
     GTE(bf.buildChild(value, "gte"))
+
+  override def arity: Arity = Arity.VarArgs
 }
 
 case class Equals(equals: Expr) extends FnExpr {

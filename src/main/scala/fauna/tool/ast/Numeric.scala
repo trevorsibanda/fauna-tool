@@ -41,7 +41,7 @@ case class BitNot(bitnot: Expr) extends FnExpr {
 
   override def build[T](value: T)(implicit bf: ASTBuilder[T]): Expr =
     BitNot(bf.buildChild(value, "bitnot"))
-  
+
   override def arity = Arity.VarArgs
 }
 
@@ -49,7 +49,7 @@ case class BitOr(bitor: Expr) extends FnExpr {
 
   override def build[T](value: T)(implicit bf: ASTBuilder[T]): Expr =
     BitOr(bf.buildChild(value, "bitor"))
-  
+
   override def arity = Arity.VarArgs
 }
 
@@ -57,7 +57,7 @@ case class BitXor(bitxor: Expr) extends FnExpr {
 
   override def build[T](value: T)(implicit bf: ASTBuilder[T]): Expr =
     BitXor(bf.buildChild(value, "bitxor"))
-  
+
   override def arity = Arity.VarArgs
 }
 
@@ -71,7 +71,7 @@ case class Divide(divide: Expr) extends FnExpr {
 
   override def build[T](value: T)(implicit bf: ASTBuilder[T]): Expr =
     Divide(bf.buildChild(value, "divide"))
-  
+
   override def arity = Arity.VarArgs
 }
 
@@ -85,7 +85,7 @@ case class Max(max: Expr) extends FnExpr {
 
   override def build[T](value: T)(implicit bf: ASTBuilder[T]): Expr =
     Max(bf.buildChild(value, "max"))
-  
+
   override def arity = Arity.VarArgs
 }
 
@@ -93,7 +93,7 @@ case class Min(min: Expr) extends FnExpr {
 
   override def build[T](value: T)(implicit bf: ASTBuilder[T]): Expr =
     Min(bf.buildChild(value, "min"))
-  
+
   override def arity = Arity.VarArgs
 }
 
@@ -101,7 +101,7 @@ case class Modulo(modulo: Expr) extends FnExpr {
 
   override def build[T](value: T)(implicit bf: ASTBuilder[T]): Expr =
     Modulo(bf.buildChild(value, "modulo"))
-  
+
   override def arity = Arity.VarArgs
 }
 
@@ -109,7 +109,7 @@ case class Multiply(multiply: Expr) extends FnExpr {
 
   override def build[T](value: T)(implicit bf: ASTBuilder[T]): Expr =
     Multiply(bf.buildChild(value, "multiply"))
-  
+
   override def arity = Arity.VarArgs
 }
 
@@ -123,7 +123,7 @@ case class Subtract(subtract: Expr) extends FnExpr {
 
   override def build[T](value: T)(implicit bf: ASTBuilder[T]): Expr =
     Subtract(bf.buildChild(value, "subtract"))
-  
+
   override def arity = Arity.VarArgs
 
 }
@@ -150,7 +150,7 @@ case class Mean(mean: Expr) extends FnExpr {
 
   override def build[T](value: T)(implicit bf: ASTBuilder[T]): Expr =
     Mean(bf.buildChild(value, "mean"))
-  
+
   override def arity = Arity.VarArgs
 }
 
@@ -158,7 +158,7 @@ case class Count(count: Expr) extends FnExpr {
 
   override def build[T](value: T)(implicit bf: ASTBuilder[T]): Expr =
     Count(bf.buildChild(value, "count"))
-  
+
   override def arity = Arity.VarArgs
 }
 
@@ -166,7 +166,7 @@ case class Sum(sum: Expr) extends FnExpr {
 
   override def build[T](value: T)(implicit bf: ASTBuilder[T]): Expr =
     Sum(bf.buildChild(value, "sum"))
-  
+
   override def arity = Arity.VarArgs
 }
 
@@ -174,7 +174,7 @@ case class Any(any: Expr) extends FnExpr {
 
   override def build[T](value: T)(implicit bf: ASTBuilder[T]): Expr =
     Any(bf.buildChild(value, "any"))
-  
+
   override def arity = Arity.VarArgs
 }
 
@@ -182,6 +182,6 @@ case class All(all: Expr) extends FnExpr {
 
   override def build[T](value: T)(implicit bf: ASTBuilder[T]): Expr =
     All(bf.buildChild(value, "all"))
-  
+
   override def arity = Arity.VarArgs
 }
