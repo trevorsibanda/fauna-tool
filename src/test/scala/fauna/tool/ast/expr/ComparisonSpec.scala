@@ -21,14 +21,14 @@ class ComparisonFunctionsSpec extends ExprSuite {
     val expr = GT(gt = NullL)
     val json = """{(gt = NullL)}"""
 
-    assertExpr(expr, "GT", 1, Arity.Exact(1), Effect.Pure)
+    assertExpr(expr, "GT", 1, Arity.VarArgs, Effect.Pure)
   }
 
   test("GTE()") {
     val expr = GTE(gte = NullL)
     val json = """{(gte = NullL)}"""
 
-    assertExpr(expr, "GTE", 1, Arity.Exact(1), Effect.Pure)
+    assertExpr(expr, "GTE", 1, Arity.VarArgs, Effect.Pure)
   }
 
 }

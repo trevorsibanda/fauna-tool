@@ -16,7 +16,7 @@ class NumericFunctionsSpec extends ExprSuite {
     val expr = Add(add = NullL)
     val json = """{(add = NullL)}"""
 
-    assertExpr(expr, "Add", 1, Arity.Exact(1), Effect.Pure)
+    assertExpr(expr, "Add", 1, Arity.VarArgs, Effect.Pure)
     expr.toJson
   }
 
@@ -24,28 +24,28 @@ class NumericFunctionsSpec extends ExprSuite {
     val expr = BitAnd(bitand = NullL)
     val json = """{(bitand = NullL)}"""
 
-    assertExpr(expr, "BitAnd", 1, Arity.Exact(1), Effect.Pure)
+    assertExpr(expr, "BitAnd", 1, Arity.VarArgs, Effect.Pure)
   }
 
   test("BitNot()") {
     val expr = BitNot(bitnot = NullL)
     val json = """{(bitnot = NullL)}"""
 
-    assertExpr(expr, "BitNot", 1, Arity.Exact(1), Effect.Pure)
+    assertExpr(expr, "BitNot", 1, Arity.VarArgs, Effect.Pure)
   }
 
   test("BitOr()") {
     val expr = BitOr(bitor = NullL)
     val json = """{(bitor = NullL)}"""
 
-    assertExpr(expr, "BitOr", 1, Arity.Exact(1), Effect.Pure)
+    assertExpr(expr, "BitOr", 1, Arity.VarArgs, Effect.Pure)
   }
 
   test("BitXor()") {
     val expr = BitXor(bitxor = NullL)
     val json = """{(bitxor = NullL)}"""
 
-    assertExpr(expr, "BitXor", 1, Arity.Exact(1), Effect.Pure)
+    assertExpr(expr, "BitXor", 1, Arity.VarArgs, Effect.Pure)
   }
 
   test("Ceil()") {
@@ -59,7 +59,7 @@ class NumericFunctionsSpec extends ExprSuite {
     val expr = Divide(divide = NullL)
     val json = """{(divide = NullL)}"""
 
-    assertExpr(expr, "Divide", 1, Arity.Exact(1), Effect.Pure)
+    assertExpr(expr, "Divide", 1, Arity.VarArgs, Effect.Pure)
   }
 
   test("Floor()") {
@@ -73,28 +73,28 @@ class NumericFunctionsSpec extends ExprSuite {
     val expr = Max(max = NullL)
     val json = """{(max = NullL)}"""
 
-    assertExpr(expr, "Max", 1, Arity.Exact(1), Effect.Pure)
+    assertExpr(expr, "Max", 1, Arity.VarArgs, Effect.Pure)
   }
 
   test("Min()") {
     val expr = Min(min = NullL)
     val json = """{(min = NullL)}"""
 
-    assertExpr(expr, "Min", 1, Arity.Exact(1), Effect.Pure)
+    assertExpr(expr, "Min", 1, Arity.VarArgs, Effect.Pure)
   }
 
   test("Modulo()") {
     val expr = Modulo(modulo = NullL)
     val json = """{(modulo = NullL)}"""
 
-    assertExpr(expr, "Modulo", 1, Arity.Exact(1), Effect.Pure)
+    assertExpr(expr, "Modulo", 1, Arity.VarArgs, Effect.Pure)
   }
 
   test("Multiply()") {
     val expr = Multiply(multiply = NullL)
     val json = """{(multiply = NullL)}"""
 
-    assertExpr(expr, "Multiply", 1, Arity.Exact(1), Effect.Pure)
+    assertExpr(expr, "Multiply", 1, Arity.VarArgs, Effect.Pure)
   }
 
   test("Round()") {
@@ -108,7 +108,7 @@ class NumericFunctionsSpec extends ExprSuite {
     val expr = Subtract(subtract = NullL)
     val json = """{(subtract = NullL)}"""
 
-    assertExpr(expr, "Subtract", 1, Arity.Exact(1), Effect.Pure)
+    assertExpr(expr, "Subtract", 1, Arity.VarArgs, Effect.Pure)
   }
 
   test("Sign()") {
@@ -136,14 +136,14 @@ class NumericFunctionsSpec extends ExprSuite {
     val expr = Mean(mean = NullL)
     val json = """{(mean = NullL)}"""
 
-    assertExpr(expr, "Mean", 1, Arity.Exact(1), Effect.Pure)
+    assertExpr(expr, "Mean", 1, Arity.VarArgs, Effect.Pure)
   }
 
   test("Count()") {
     val expr = Count(count = NullL)
     val json = """{(count = NullL)}"""
 
-    assertExpr(expr, "Count", 1, Arity.Exact(1), Effect.Pure)
+    assertExpr(expr, "Count", 1, Arity.VarArgs, Effect.Pure)
   }
 
   test("Sum()") {
@@ -157,14 +157,14 @@ class NumericFunctionsSpec extends ExprSuite {
     val expr = Any(any = NullL)
     val json = """{(any = NullL)}"""
 
-    assertExpr(expr, "Any", 1, Arity.Exact(1), Effect.Pure)
+    assertExpr(expr, "Any", 1, Arity.VarArgs, Effect.Pure)
   }
 
   test("All()") {
     val expr = All(all = NullL)
     val json = """{(all = NullL)}"""
 
-    assertExpr(expr, "All", 1, Arity.Exact(1), Effect.Pure)
+    assertExpr(expr, "All", 1, Arity.VarArgs, Effect.Pure)
   }
 
 }
