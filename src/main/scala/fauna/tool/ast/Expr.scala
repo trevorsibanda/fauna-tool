@@ -16,6 +16,7 @@ import org.json4s.JsonAST.{
   JString,
   JValue
 }
+import scala.collection.mutable
 
 abstract class Expr extends Product {
 
@@ -62,6 +63,8 @@ abstract class Expr extends Product {
       case Some(e) => e.forEachChildren(fn)
     }
   }
+
+  def contains(e: Expr, pred: Expr => Boolean) = Expr.contains(this, e)()
 
   def register[T]()(implicit bf: ASTBuilder[T]) =
     bf.register(name, arity, classAccessors, build)
@@ -124,6 +127,19 @@ object Expr {
 
   def reg[T](implicit bf: ASTBuilder[T]) = {
     knownExprs.map(_.register()(bf))
+  }
+
+  private val allowAllPred: Expr => Boolean = _ => true
+
+  def contains(expr1: Expr, expr2: Expr)(
+    pred: Expr => Boolean = allowAllPred
+  ): Boolean = {
+    val p = mutable.ArrayBuilder.make[Expr]
+    val c = mutable.ArrayBuilder.make[Expr]
+    expr1.forEachChildren(e => if (pred(e)) p.addOne(e))
+    expr2.forEachChildren(e => if (pred(e)) c.addOne(e))
+
+    p.result.containsSlice(c.result)
   }
 
   def toJson(e: Expr): JValue = e match {

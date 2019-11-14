@@ -166,6 +166,22 @@ class LogsMonitor(config: LogsMonitorConfig) {
     if (!cfg.filterQueryContainsFns.isEmpty)
       lb.addOne(QueryFilter(cfg.filterQueryContainsFns))
 
+    if (!cfg.filterQueryContainsExpr.isEmpty) {
+      val text = cfg.filterQueryContainsExpr
+      val fqlBuilder = new FQLBuilder()
+      fauna.tool.ast.Expr.reg(fqlBuilder)
+      Seq(Try {
+        bf.build(parse(text))
+      }, Try {
+        fqlBuilder.build(text)
+      }).collectFirst {
+          case Success(expr) => lb.addOne(QueryContainsExprFilter(expr, false, Nil))
+        }
+        .fold({
+          logger.warn("Failed to parse argument for --fqe")
+        })(_ => ())
+    }
+
     lb.toList
   }
 

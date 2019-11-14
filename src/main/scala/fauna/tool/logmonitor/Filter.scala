@@ -60,6 +60,23 @@ case class QueryFilter(functionNames: Seq[String]) extends Filter {
 
 }
 
+case class QueryContainsExprFilter(
+  search: Expr,
+  ignoreLiterals: Boolean,
+  ignoredFunctionNames: Seq[String]
+) extends Filter {
+
+  def predicate(expr: Expr): Boolean = expr match {
+    case _: Literal if ignoreLiterals                     => false
+    case e: Expr if ignoredFunctionNames.contains(e.name) => false
+    case _                                                => true
+  }
+
+  override def apply(entry: LogEntry, expr: Option[Expr]): Boolean = {
+    expr.fold(false)(Expr.contains(_, search)(predicate))
+  }
+}
+
 case class QueryRegexFilter(codegen: Generator, _pattern: String) extends Filter {
 
   val pattern: Regex = s"${_pattern}".r

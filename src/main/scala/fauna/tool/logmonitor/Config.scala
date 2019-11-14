@@ -7,6 +7,7 @@ case class LogsMonitorConfig(
   followDelayMs: Int = 200,
   filterDrivers: Seq[String] = Nil,
   filterQueryContainsFns: Seq[String] = Nil,
+  filterQueryContainsExpr: String = "",
   filterRegexQuery: String = "",
   filterQueryEffect: String = "",
   filterTimestampStart: String = "",
