@@ -1,9 +1,5 @@
 package fauna.tool.ast
 
-import org.scalatest._
-
-import fauna.tool.parser.ASTBuilder
-
 class AuthFunctionsSpec extends ExprSuite {
 
   test("Identity()") {
@@ -12,6 +8,9 @@ class AuthFunctionsSpec extends ExprSuite {
 
     assertExpr(expr, "Identity", 1, Arity.Exact(1), Effect.Pure)
 
+    assertBuildFromCode("Identity()", Identity(NullL))
+    assertBuildFromWire("""{"identity": null}""", Identity(NullL))
+
   }
 
   test("HasIdentity()") {
@@ -19,6 +18,9 @@ class AuthFunctionsSpec extends ExprSuite {
     val json = """{(has_identity: Expr)}"""
 
     assertExpr(expr, "HasIdentity", 1, Arity.Exact(1), Effect.Pure)
+
+    assertBuildFromCode("HasIdentity()", HasIdentity(NullL))
+    assertBuildFromWire("""{"has_identity": null}""", HasIdentity(NullL))
   }
 
   test("Identify()") {
@@ -26,6 +28,10 @@ class AuthFunctionsSpec extends ExprSuite {
     val json = """{(identify: Expr, password: Expr)}"""
 
     assertExpr(expr, "Identify", 2, Arity.Exact(2), Effect.Pure)
+    assertBuildFromCode(
+      """Identify(Collection("testcol"), "secret")""",
+      Identify(Collection(StringL("testcol"), None), StringL("secret"))
+    )
   }
 
   test("Login()") {
@@ -33,13 +39,23 @@ class AuthFunctionsSpec extends ExprSuite {
     val json = """{(login: Expr, params: Expr)}"""
 
     assertExpr(expr, "Login", 2, Arity.Exact(2), Effect.Pure)
+
+    assertBuildFromCode(
+      """Login(Collection("testcol"), "password")""",
+      Login(Collection(StringL("testcol"), None), StringL("password"))
+    )
+    assertBuildFromWire(
+      """{"login": {"collection": "testcol"}, "params": "password"}""",
+      Login(Collection(StringL("testcol"), None), StringL("password"))
+    )
   }
 
   test("Logout()") {
     val expr = Logout(logout = NullL)
-    val json = """{(logout: Expr)}"""
-
     assertExpr(expr, "Logout", 1, Arity.Exact(1), Effect.Pure)
+
+    assertBuildFromCode("Logout()", Logout(NullL))
+    assertBuildFromWire("{\"logout\": null}", Logout(NullL))
   }
 
 }
