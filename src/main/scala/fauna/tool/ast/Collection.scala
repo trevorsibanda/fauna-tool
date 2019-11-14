@@ -66,10 +66,10 @@ case class ForEach(foreach: Expr, collection: Expr) extends Expr {
     ForEach(bf.buildChild(value, "foreach"), bf.buildChild(value, "collection"))
 }
 
-case class Filter(filter: Expr, collection: Expr) extends Expr {
+case class Filter(collection: Expr, filter: Expr) extends Expr {
 
   override def build[T](value: T)(implicit bf: ASTBuilder[T]): Expr =
-    Filter(bf.buildChild(value, "filter"), bf.buildChild(value, "collection"))
+    Filter(bf.buildChild(value, "collection"), bf.buildChild(value, "filter"))
 }
 
 case class MapFn(collection: Expr, map: Expr) extends Expr {

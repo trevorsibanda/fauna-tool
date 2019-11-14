@@ -177,6 +177,7 @@ object Expr {
     MapFn(NullL, NullL),
     Call(NullL, None),
     If(NullL, NullL, NullL),
+    Filter(NullL, NullL),
     Do(NullL)
     //Comparison
     ,
