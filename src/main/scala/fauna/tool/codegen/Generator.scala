@@ -17,7 +17,15 @@ import fauna.tool.ast.{
   TrueL
 }
 import fauna.tool.ast.{ BytesV, DateV, QueryV, SetV, TimestampV }
-import fauna.tool.ast.{ Collections, Databases, Indexes, Keys, Tokens }
+import fauna.tool.ast.{
+  Collections,
+  Databases,
+  Functions,
+  Indexes,
+  Keys,
+  Logout,
+  Tokens
+}
 import fauna.tool.parser.ASTBuilder
 import fauna.tool.ast.UnknownExpression
 
@@ -85,7 +93,7 @@ trait Generator {
       }
     }
     case e @ (Databases(NullL) | Collections(NullL) | Indexes(NullL) | Keys(NullL) |
-        Tokens(NullL)) =>
+        Tokens(NullL) | Functions(NullL) | Logout(NullL)) =>
       s"${e.name}()"
     case fv: FaunaValue => faunaValueToCode(fv)
     case l: Literal     => literalToCode(l)
