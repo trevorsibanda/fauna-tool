@@ -31,7 +31,7 @@ class LiteralSpec extends FunSuite with Matchers {
   }
 
   test("have no children") {
-    literals.collectFirst {
+    literals.dropRight(2).collectFirst {
       case l: Literal if !l.children.isEmpty => l
     } shouldEqual None
   }
