@@ -1,8 +1,10 @@
 package fauna.tool.logmonitor
 
 import fauna.tool.ast.Effect
-
 import fauna.tool.ast.Expr
+
+import fauna.tool.codegen.Generator
+import scala.util.matching.Regex
 
 trait Filter {
   def apply(entry: LogEntry, expr: Option[Expr]): Boolean
@@ -58,8 +60,14 @@ case class QueryFilter(functionNames: Seq[String]) extends Filter {
 
 }
 
-case class QueryRegexFilter(pattern: String) extends Filter {
-  override def apply(entry: LogEntry, expr: Option[Expr]): Boolean = ???
+case class QueryRegexFilter(codegen: Generator, _pattern: String) extends Filter {
+
+  val pattern: Regex = s"${_pattern}".r
+
+  override def apply(entry: LogEntry, expr: Option[Expr]): Boolean = expr match {
+    case None    => false
+    case Some(e) => pattern.matches(codegen.exprToCode(e))
+  }
 }
 
 case class QueryDriverFilter(driverNames: Seq[String]) extends Filter {

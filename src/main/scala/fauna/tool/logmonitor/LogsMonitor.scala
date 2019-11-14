@@ -128,7 +128,7 @@ class LogsMonitor(config: LogsMonitorConfig) {
     expr: fauna.tool.ast.Expr,
     codegen: Generator
   ): Unit = {
-    Future { LogsMonitor.showEntry(entry, expr, codegen) }
+    LogsMonitor.showEntry(entry, expr, codegen)
   }
 
   def loadFilters(cfg: LogsMonitorConfig): List[Filter] = {
@@ -152,7 +152,7 @@ class LogsMonitor(config: LogsMonitorConfig) {
       lb.addOne(HttpResponseFilter(cfg.filterResponseCode))
 
     if (!cfg.filterRegexQuery.isEmpty)
-      lb.addOne(QueryRegexFilter(cfg.filterRegexQuery))
+      lb.addOne(QueryRegexFilter(this.codegen, cfg.filterRegexQuery))
 
     if (!cfg.filterTimestampStart.isEmpty)
       lb.addOne(
