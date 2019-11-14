@@ -18,24 +18,18 @@ case class Events(events: Expr) extends FnExpr {
 abstract class AbstractMatch(`match`: Expr, index: Option[Expr], terms: Option[Expr])
     extends FnExpr
 
-case class Match(`match`: Expr) extends AbstractMatch(`match`, None, None) {
+case class Match(
+  `match`: Expr,
+  index: Option[Expr] = None,
+  terms: Option[Expr] = None
+) extends FnExpr {
 
   override def build[T](value: T)(implicit bf: ASTBuilder[T]): Expr =
-    Match(bf.buildChild(value, "match"))
-}
-
-case class MatchIndex(`match`: Expr, index: Expr)
-    extends AbstractMatch(`match`, Some(index), None) {
-
-  override def build[T](value: T)(implicit bf: ASTBuilder[T]): Expr =
-    MatchIndex(bf.buildChild(value, "match"), bf.buildChild(value, "index"))
-}
-
-case class MatchTerms(`match`: Expr, terms: Expr)
-    extends AbstractMatch(`match`, None, Some(terms)) {
-
-  override def build[T](value: T)(implicit bf: ASTBuilder[T]): Expr =
-    MatchTerms(bf.buildChild(value, "match"), bf.buildChild(value, "terms"))
+    Match(
+      bf.buildChild(value, "match"),
+      bf.buildChildOpt(value, "index"),
+      bf.buildChildOpt(value, "terms")
+    )
 }
 
 case class Union(union: Expr) extends FnExpr {

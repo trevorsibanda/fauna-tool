@@ -5,6 +5,7 @@ import fauna.tool.ast.Expr
 
 import fauna.tool.codegen.Generator
 import scala.util.matching.Regex
+import fauna.tool.ast.Literal
 
 trait Filter {
   def apply(entry: LogEntry, expr: Option[Expr]): Boolean

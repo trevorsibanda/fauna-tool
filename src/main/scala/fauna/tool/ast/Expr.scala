@@ -117,8 +117,8 @@ abstract class Expr extends Product {
 object Expr {
 
   //Maps a given function name to an instance of the class
-  def stringFnToExpr(str: String)(implicit bf: ASTBuilder[_]): Option[Expr] =
-    knownExprs.find(_.name.toLowerCase == str)
+  def stringFnToExpr(str: String): Option[Expr] =
+    knownExprs.find(_.name.toLowerCase == str.toLowerCase)
 
   def build[T](value: T)(implicit bf: ASTBuilder[T]): Expr = bf.build(value)
 
@@ -320,10 +320,7 @@ object Expr {
     Exists(NullL, None),
     Get(NullL, None),
     KeyFromSecret(NullL),
-    //abstract class AbstractPaginate(paginate: Expr, before: Option[Expr], after: Option[Expr], cursor: Option[Expr], ts: Option[Expr], size: Option[Expr], events: Option[Expr], sources: Option[Expr]) extends FnExpr
-    PaginateAfter(NullL, None, None, None, None, None),
-    PaginateCursor(NullL, NullL, None, None, None, None),
-    PaginateBefore(NullL, NullL, None, None, None, None),
+    Paginate(NullL, None, None, None, None, None, None, None),
     //writes
     Create(NullL, None),
     Update(NullL, None),

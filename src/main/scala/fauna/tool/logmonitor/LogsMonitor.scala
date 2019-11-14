@@ -13,6 +13,8 @@ import scala.collection.mutable
 import scala.concurrent.Future
 
 import com.typesafe.scalalogging.Logger
+import fauna.tool.parser.FQLBuilder
+import scala.util.{ Success, Try }
 
 case class APIRequest(
   method: String,
@@ -310,6 +312,13 @@ object LogsMonitor {
       .text("Comma seperated list of FQL functions")
       .action(
         (x, c) => c.copy(logs = c.logs.copy(filterQueryContainsFns = x.split(",")))
+      ),
+    p.opt[String]("filter-in-query")
+      .abbr("fqe")
+      .valueName("query")
+      .text("Filter  if expression is in query")
+      .action(
+        (x, c) => c.copy(logs = c.logs.copy(filterQueryContainsExpr = x))
       ),
     p.opt[String]("filter-query-regexp")
       .abbr("fr")
