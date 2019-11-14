@@ -31,7 +31,7 @@ class ExprSuite extends FunSuite with Matchers {
   }
 
   def assertBuildFromWire(json: JValue, expected: Expr): Unit = {
-    expected.build(json)(ExprSuite.jsonAST) shouldEqual expected
+    ExprSuite.jsonAST.build(json) shouldEqual expected
   }
 
   def assertBuildFromCode(fql: String, expected: Expr) = {
