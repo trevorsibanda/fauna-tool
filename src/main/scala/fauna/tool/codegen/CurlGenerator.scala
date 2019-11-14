@@ -11,7 +11,8 @@ class CurlGenerator extends Generator {
 
   val allowUnknownExpr: Boolean = true
 
-  val template = """curl %s -H "Authorization: Basic %s" -d '%s' # %s"""
+  val template =
+    """curl %s -H "X-Fauna-Driver: fauna-tool" -H "Authorization: Basic %s" -d '%s' # %s"""
 
   val commentGen = new JSCodeGenerator()
 
