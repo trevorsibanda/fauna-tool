@@ -141,8 +141,10 @@ object Generator {
     Expr.reg(bf)
 
     val cgen = config.codegen match {
-      case "curl" => new CurlGenerator()
-      case "js"   => new JSCodeGenerator()
+      case "curl"   => new CurlGenerator()
+      case "js"     => new JSCodeGenerator()
+      case "go"     => new GolangCodeGenerator()
+      case "python" => new PythonCodeGenerator()
     }
 
     config.input match {
