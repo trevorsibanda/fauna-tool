@@ -256,8 +256,10 @@ object LogsMonitor {
 
     val driverName =
       entry.driver
-        .getOrElse(entry.request.headers.getOrElse("user_agent", "N/A"))
-        .toUpperCase
+        .getOrElse(entry.request.headers.getOrElse("user_agent", "N/A")) match {
+        case s: String => s.toUpperCase()
+        case _         => "N/A"
+      }
     val overlayColor = expr.effect match {
       case Effect.Pure  => fansi.Color.LightGreen
       case Effect.Read  => fansi.Color.Cyan
