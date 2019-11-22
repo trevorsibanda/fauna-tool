@@ -42,10 +42,15 @@ class FQLBuilder extends ASTBuilder[String] {
 
   override def build(value: String): Expr = bf.build(parseT(value))
 
+  override def readChild(value: String, childName: String): String = ???
+
   def parseT(s: String): Expr = fastparse.parse(s, FQL.EXPRESSION(_)).get.value
 }
 
 private[parser] class FQL_ASTBuilder extends ASTBuilder[Expr] {
+
+  def readChild(parent: Expr, childName: String): Expr =
+    readArgument(parent.asInstanceOf[MethodCall], childName).getOrElse(Undefined)
 
   def findBuilder(q: FQL.MethodCall): Option[(Builder, Accessors, Arity)] = {
     registered.collectFirst {
