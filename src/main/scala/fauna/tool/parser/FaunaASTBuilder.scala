@@ -10,6 +10,7 @@ import fauna.tool.ast.{
   Literal,
   NullL,
   NumericL,
+  ObjectExpr,
   ObjectL,
   StringL,
   Undefined
@@ -196,13 +197,18 @@ private[parser] object FQL {
     P("[" ~ (EXPRESSION).rep(0, sep = ",") ~ "]").map(seq => ArrayL(seq.toList))
 
   def EXPRESSION[_: P]: P[Expr] =
-    P(NUMBER | STRING | BOOLEAN | LIST | NULL | OBJECT | CALL)
+    P(NUMBER | STRING | BOOLEAN | LIST | NULL | OBJECT | BINDING | CALL)
 
   def kvPair[_: P]: P[(String, Expr)] =
     P(P(Lexical.identifier | Lexical.stringliteral) ~ ":" ~ EXPRESSION)
 
-  def OBJECT[_: P]: P[ObjectL] = P("{" ~ kvPair.rep(0, sep = ",") ~ "}").map { seq =>
-    ObjectL(seq.toMap)
+  def OBJECT[_: P]: P[ObjectExpr] = P("{" ~ kvPair.rep(0, sep = ",") ~ "}").map {
+    seq =>
+      ObjectExpr(ObjectL(seq.toMap))
+  }
+
+  def BINDING[_: P]: P[ObjectL] = P(Lexical.kw("binding") ~ OBJECT).map {
+    case ObjectExpr(ObjectL(m)) => ObjectL(m)
   }
 
   def CALL[_: P]: P[MethodCall] =

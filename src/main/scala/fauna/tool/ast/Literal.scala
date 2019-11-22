@@ -12,7 +12,7 @@ case class ObjectExpr(`object`: Expr) extends Expr {
   override def toString = `object`.toString
 
   override def build[T](value: T)(implicit bf: ASTBuilder[T]): Expr =
-    ObjectExpr(bf.buildChild(value, "object"))
+    ObjectExpr(bf.extractLiteral(bf.readChild(value, "object")))
 
 }
 
@@ -28,6 +28,8 @@ case class StringL(s: String) extends Literal {
 
 case object NullL extends Literal {
   override def evaluatesTo: Type = NullT
+
+  override def build[T](value: T)(implicit bf: ASTBuilder[T]): Expr = ???
 }
 
 abstract class NumericL[V](v: V) extends Literal {
