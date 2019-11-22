@@ -28,7 +28,7 @@ object Application {
       .children(Generator.parserOpts(self): _*)
       .action((_, c) => { c.copy(command = "code") })
 
-    cmd("fuzzer").hidden()
+    cmd("fuzzer").action((_, c) => { c.copy(command = "fuzzer") })
 
     cmd("validate").text("Basic query validator").hidden()
 
