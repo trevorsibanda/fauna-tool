@@ -306,10 +306,9 @@ object Expr {
     // Set ref constructors
     ,
     Singleton(NullL),
-    Events(NullL)
-    //abstract class AbstractMatch(`match`: Expr, index: Option[Expr], terms: Option[Expr]) extends FnExpr
-    ,
-    Match(NullL),
+    Events(NullL),
+    Index(NullL, None),
+    Match(NullL, None, None),
     Union(NullL),
     Intersection(NullL),
     Difference(NullL),
@@ -388,8 +387,7 @@ object Expr {
     //case class Ref(ref, id, scope: Option[Expr])
     ,
     Database(NullL, None),
-    Index(NullL, None),
-    Class(NullL, None),
+    
     Collection(NullL, None),
     Function(NullL, None),
     Role(NullL, None)
