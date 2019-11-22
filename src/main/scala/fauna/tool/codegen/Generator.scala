@@ -32,6 +32,8 @@ import fauna.tool.ast.UnknownExpression
 import com.typesafe.scalalogging.Logger
 import scala.util.Try
 
+import fauna.tool.parser.RandomASTBuilder
+
 case class GeneratorException(msg: String) extends Exception(msg)
 
 case class CodeGenConfig(
@@ -134,6 +136,7 @@ object Generator {
     implicit val bf = config.format match {
       case "fql"  => new fauna.tool.parser.FQLBuilder()
       case "json" => new fauna.tool.parser.JsonASTBuilder()
+      case "rand" => new fauna.tool.parser.RandomASTBuilder(0)
     }
     Expr.reg(bf)
 
@@ -160,6 +163,14 @@ object Generator {
       val ast = config.format match {
         case "fql"  => Expr.build(line)(bf.asInstanceOf[ASTBuilder[String]])
         case "json" => Expr.build(parse(line))(bf.asInstanceOf[ASTBuilder[JValue]])
+        case "rand" => {
+          val e: Expr = ObjectExpr(NullL);
+          val r = Expr.build(e)(bf.asInstanceOf[ASTBuilder[Expr]]);
+          r match {
+            case ObjectExpr(obj) => obj
+            case _               => r
+          }
+        }
       }
 
       println(

@@ -12,17 +12,7 @@ trait RandomGenerator {
 
   def randomWriteFn: Expr
 
-  def randomExpr: Expr
-
-  def literals: Seq[Literal]
-
-  def readFns: Seq[Expr]
-
-  def writeFns: Seq[Expr]
-
-  def pureFns: Seq[Expr]
-
-  def dynamicFns: Seq[Expr]
+  def random: Expr
 
   def withArity(arity: Arity): Seq[Expr]
 }
