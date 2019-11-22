@@ -10,7 +10,6 @@ import fauna.tool.codegen.Generator
 
 import org.apache.commons.io.input.{ Tailer, TailerListenerAdapter }
 import scala.collection.mutable
-import scala.concurrent.Future
 
 import com.typesafe.scalalogging.Logger
 import fauna.tool.parser.FQLBuilder

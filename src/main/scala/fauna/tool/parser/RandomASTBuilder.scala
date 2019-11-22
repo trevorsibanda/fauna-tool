@@ -1,22 +1,11 @@
 package fauna.tool.parser
 
 import fauna.tool.ast.{
-  Arity,
-  ArrayL,
-  BooleanL,
-  DecimalL,
   Expr,
-  IntL,
   Literal,
-  NullL,
-  NumericL,
-  ObjectL,
-  StringL,
-  Undefined
+  NullL
 }
-import fastparse._
 
-import fauna.tool.parser.FQL.MethodCall
 import fauna.tool.fuzzer.BasicRandGen
 
 import scala.util.Random

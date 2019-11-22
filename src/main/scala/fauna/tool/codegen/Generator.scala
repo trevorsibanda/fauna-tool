@@ -34,7 +34,6 @@ import fauna.tool.ast.UnknownExpression
 import com.typesafe.scalalogging.Logger
 import scala.util.Try
 import fauna.tool.ast.ObjectExpr
-import fauna.tool.parser.RandomASTBuilder
 
 case class GeneratorException(msg: String) extends Exception(msg)
 
