@@ -93,6 +93,9 @@ class JsonASTBuilder() extends ASTBuilder[JValue] {
     }
   }
 
+  override def readChild(parent: JValue, childName: String): JValue =
+    parent \ childName
+
   private[parser] def parseBindings(j: JValue): Literal =
     ObjectL(j match {
       case obj: JObject =>

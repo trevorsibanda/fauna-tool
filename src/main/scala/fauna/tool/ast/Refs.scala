@@ -4,24 +4,30 @@ import fauna.tool.parser.ASTBuilder
 
 case class Ref(`@ref`: Expr) extends Expr {
 
-  override def build[T](value: T)(implicit bf: ASTBuilder[T]): Expr =
+  override def build[T](value: T)(implicit bf: ASTBuilder[T]): Expr = {
+    val ref = bf.readChild(
+      bf.readChild(bf.readChild(bf.readChild(value, "@ref"), "class"), "@ref"),
+      "id"
+    )
     bf.buildChild(value, "@ref") match {
+      case ObjectL(map) if map.isDefinedAt("class") =>
+        Ref2(strRefToExpr(bf.build(ref)), map.get("id"), map.get("scope"))
       case ObjectL(map) if map.isDefinedAt("id") =>
-        map("id") match {
-          case l: StringL => strRefToExpr(value, l)
-          case _          => Ref(ObjectL(map))
-        }
-      case s: StringL => strRefToExpr(value, s)
+        strRefToExpr(map("id"))
+      case s: StringL => strRefToExpr(s)
       case expr       => Ref(expr)
     }
+  }
 
-  private def strRefToExpr[T](value: T, strL: StringL)(
-    implicit bf: ASTBuilder[T]
-  ): Expr = strL match {
-    case StringL("databases")   => Databases(NullL)
-    case StringL("indexes")     => Indexes(NullL)
-    case StringL("collections") => Collections(NullL)
-    case id                     => Ref2(NullL, Some(id), bf.buildChildOpt(value, "scope"))
+  private def strRefToExpr[T](e: Expr): Expr = e match {
+    case StringL("databases")                         => Databases(NullL)
+    case StringL("indexes")                           => Indexes(NullL)
+    case StringL("tokens")                            => Tokens(NullL)
+    case StringL("functions")                         => Functions(NullL)
+    case StringL("classes")                           => Classes(NullL)
+    case StringL("collections")                       => Collections(NullL)
+    case StringL(s) if """^(\w+)/(.*)""".r.matches(s) => Ref(StringL(s))
+    case _                                            => e
   }
 }
 
@@ -32,6 +38,8 @@ case class Ref2(ref: Expr, id: Option[Expr], scope: Option[Expr]) extends Expr {
     bf.buildChildOpt(value, "id"),
     bf.buildChildOpt(value, "scope")
   )
+
+  override def name: String = "Ref"
 
 }
 
@@ -81,5 +89,5 @@ case class NextID(next_id: Expr) extends FnExpr {
 case class NewID(new_id: Expr) extends FnExpr {
 
   override def build[T](value: T)(implicit bf: ASTBuilder[T]): Expr =
-    NextID(bf.buildChild(value, "new_id"))
+    NewID(bf.buildChild(value, "new_id"))
 }

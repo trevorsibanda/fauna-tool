@@ -64,7 +64,12 @@ class LogsMonitor(config: LogsMonitorConfig) {
 
   val logger = Logger("logs-monitor")
 
-  val codegen: Generator = new fauna.tool.codegen.JSCodeGenerator()
+  val codegen: Generator = config.codegen match {
+    case "js"     => new fauna.tool.codegen.JSCodeGenerator()
+    case "go"     => new fauna.tool.codegen.GolangCodeGenerator()
+    case "python" => new fauna.tool.codegen.PythonCodeGenerator()
+    case "curl"   => new fauna.tool.codegen.CurlGenerator()
+  }
 
   implicit val bf = new fauna.tool.parser.JsonASTBuilder()
   fauna.tool.ast.Expr.reg(bf)
@@ -251,8 +256,10 @@ object LogsMonitor {
 
     val driverName =
       entry.driver
-        .getOrElse(entry.request.headers.getOrElse("user_agent", "N/A"))
-        .toUpperCase
+        .getOrElse(entry.request.headers.getOrElse("user_agent", "N/A")) match {
+        case s: String => s.toUpperCase()
+        case _         => "N/A"
+      }
     val overlayColor = expr.effect match {
       case Effect.Pure  => fansi.Color.LightGreen
       case Effect.Read  => fansi.Color.Cyan

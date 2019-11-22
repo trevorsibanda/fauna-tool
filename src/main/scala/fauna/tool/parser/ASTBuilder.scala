@@ -30,6 +30,8 @@ abstract class ASTBuilder[T] {
 
   def build(value: T): Expr
 
+  def readChild(parent: T, childName: String): T
+
   def buildChild(parent: T, childName: String): Expr
 
   def buildChildOpt(parent: T, childName: String): Option[Expr]

@@ -106,7 +106,7 @@ class DriverCoverage(config: CoverageConfig) {
         case (fn: String, count: Int) if count >= maxHits => fn
       }
       .mkString(" ,")
-    println(s"Statements Invoked:\t\t\t$totalHits")
+    println(s"Statements Invoked:\t\t$totalHits")
     println(s"Most Frequent Expr:\t\t$mostFrequent")
     println(s"Not Invoked       :\t\t${noHits.mkString(", ")}")
   }

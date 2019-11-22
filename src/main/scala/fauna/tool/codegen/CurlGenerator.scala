@@ -23,7 +23,7 @@ class CurlGenerator extends Generator {
     val jsonString = compact(render(json))
     template.format(
       "$FAUNA_HOST",
-      "$BASE64_FAUNA_KEY",
+      "$FAUNA_KEY",
       jsonString,
       commentGen.exprToCode(expr)
     )

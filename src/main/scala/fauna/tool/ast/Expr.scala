@@ -143,7 +143,8 @@ object Expr {
   }
 
   def toJson(e: Expr): JValue = e match {
-    case l: Literal => literalToJson(l)
+    case ObjectExpr(ObjectL(m)) => JObject(JField("object", mapToJObject(m)))
+    case l: Literal             => literalToJson(l)
     case e: Expr if e.arity == Arity.VarArgs =>
       JObject(JField(e.classAccessors.head._1, JArray(e.children.collect {
         case Some(x) => toJson(x)
@@ -162,15 +163,17 @@ object Expr {
     case DecimalL(d) => JDecimal(d)
     case IntL(i)     => JInt(i)
     case ArrayL(l)   => JArray(l.map(_.toJson))
-    case ObjectL(m) =>
-      JObject(JField("object", JObject(m.map {
-        case (k, v) => JField(k, v.toJson)
-      }.toList)))
-    case StringL(s) => JString(s)
-    case TrueL      => JBool(true)
-    case FalseL     => JBool(false)
-    case NullL      => JNull
+    case ObjectL(m)  => mapToJObject(m)
+    case StringL(s)  => JString(s)
+    case TrueL       => JBool(true)
+    case FalseL      => JBool(false)
+    case NullL       => JNull
   }
+
+  private[tool] def mapToJObject(m: Map[String, Expr]): JObject =
+    JObject(m.map {
+      case (k, v) => JField(k, v.toJson)
+    }.toList)
 
   //Nulled instances of all known Expr
   //Used by ASTBuilder to register each Expr builder
@@ -303,10 +306,9 @@ object Expr {
     // Set ref constructors
     ,
     Singleton(NullL),
-    Events(NullL)
-    //abstract class AbstractMatch(`match`: Expr, index: Option[Expr], terms: Option[Expr]) extends FnExpr
-    ,
-    Match(NullL),
+    Events(NullL),
+    Index(NullL, None),
+    Match(NullL, None, None),
     Union(NullL),
     Intersection(NullL),
     Difference(NullL),
@@ -385,8 +387,7 @@ object Expr {
     //case class Ref(ref, id, scope: Option[Expr])
     ,
     Database(NullL, None),
-    Index(NullL, None),
-    Class(NullL, None),
+    
     Collection(NullL, None),
     Function(NullL, None),
     Role(NullL, None)

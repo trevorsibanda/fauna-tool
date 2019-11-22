@@ -24,6 +24,8 @@ import fauna.tool.ast.{
   Indexes,
   Keys,
   Logout,
+  NewID,
+  NextID,
   Tokens
 }
 import fauna.tool.parser.ASTBuilder
@@ -31,6 +33,8 @@ import fauna.tool.ast.UnknownExpression
 
 import com.typesafe.scalalogging.Logger
 import scala.util.Try
+import fauna.tool.ast.ObjectExpr
+import fauna.tool.parser.RandomASTBuilder
 
 case class GeneratorException(msg: String) extends Exception(msg)
 
@@ -75,11 +79,11 @@ trait Generator {
   }
 
   def faunaValueToCode(value: FaunaValue): Code = value match {
-    case SetV(s)        => s"""Set(${exprToCode(s)})"""
-    case DateV(v)       => s"""Date(${exprToCode(v)})"""
-    case BytesV(b)      => s"""Bytes(${exprToCode(b)})"""
-    case TimestampV(ts) => s"""TimeStamp(${exprToCode(ts)})"""
-    case QueryV(q)      => s"""Query(${exprToCode(q)})"""
+    case SetV(s)        => s"""${fnName("Set")}(${exprToCode(s)})"""
+    case DateV(v)       => s"""${fnName("Date")}(${exprToCode(v)})"""
+    case BytesV(b)      => s"""${fnName("Bytes")}(${exprToCode(b)})"""
+    case TimestampV(ts) => s"""${fnName("Timestamp")}(${exprToCode(ts)})"""
+    case QueryV(q)      => s"""${fnName("Query")}(${exprToCode(q)})"""
   }
 
   def exprToCode(expr: Expr): Code = expr match {
@@ -93,8 +97,9 @@ trait Generator {
       }
     }
     case e @ (Databases(NullL) | Collections(NullL) | Indexes(NullL) | Keys(NullL) |
-        Tokens(NullL) | Functions(NullL) | Logout(NullL)) =>
-      s"${e.name}()"
+        Tokens(NullL) | Functions(NullL) | Logout(NullL) | NewID(NullL) |
+        NextID(NullL)) =>
+      s"${fnName(e.name)}()"
     case fv: FaunaValue => faunaValueToCode(fv)
     case l: Literal     => literalToCode(l)
     case e: Expr if e.arity.isInstanceOf[Arity.Exact] =>
@@ -102,22 +107,24 @@ trait Generator {
         .map {
           case Some(x) => exprToCode(x)
         }
-        .mkString(s"${e.name}(", ",", ")")
+        .mkString(s"${fnName(e.name)}(", ",", ")")
 
     case e: Expr if e.arity.isInstanceOf[Arity.Between] =>
       e.children
         .collect {
           case Some(x) => exprToCode(x)
         }
-        .mkString(s"${e.name}(", ",", ")")
+        .mkString(s"${fnName(e.name)}(", ",", ")")
     case e: Expr if e.arity == Arity.VarArgs =>
       e.children
         .map {
           case Some(x) => exprToCode(x)
         }
-        .mkString(s"${e.name}(", ",", ")")
+        .mkString(s"${fnName(e.name)}(", ",", ")")
 
   }
+
+  def fnName(fn: String): String = fn
 
   def code: Code
 
@@ -134,12 +141,15 @@ object Generator {
     implicit val bf = config.format match {
       case "fql"  => new fauna.tool.parser.FQLBuilder()
       case "json" => new fauna.tool.parser.JsonASTBuilder()
+      case "rand" => new fauna.tool.parser.RandomASTBuilder(0)
     }
     Expr.reg(bf)
 
     val cgen = config.codegen match {
-      case "curl" => new CurlGenerator()
-      case "js"   => new JSCodeGenerator()
+      case "curl"   => new CurlGenerator()
+      case "js"     => new JSCodeGenerator()
+      case "go"     => new GolangCodeGenerator()
+      case "python" => new PythonCodeGenerator()
     }
 
     config.input match {
@@ -160,6 +170,14 @@ object Generator {
       val ast = config.format match {
         case "fql"  => Expr.build(line)(bf.asInstanceOf[ASTBuilder[String]])
         case "json" => Expr.build(parse(line))(bf.asInstanceOf[ASTBuilder[JValue]])
+        case "rand" => {
+          val e: Expr = ObjectExpr(NullL);
+          val r = Expr.build(e)(bf.asInstanceOf[ASTBuilder[Expr]]);
+          r match {
+            case ObjectExpr(obj) => obj
+            case _               => r
+          }
+        }
       }
 
       println(
