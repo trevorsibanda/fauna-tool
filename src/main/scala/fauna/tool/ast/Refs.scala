@@ -81,5 +81,5 @@ case class NextID(next_id: Expr) extends FnExpr {
 case class NewID(new_id: Expr) extends FnExpr {
 
   override def build[T](value: T)(implicit bf: ASTBuilder[T]): Expr =
-    NextID(bf.buildChild(value, "new_id"))
+    NewID(bf.buildChild(value, "new_id"))
 }
