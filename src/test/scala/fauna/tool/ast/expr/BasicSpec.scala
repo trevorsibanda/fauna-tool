@@ -36,7 +36,7 @@ class BasicFunctionsSpec extends ExprSuite {
 
     assertBuildFromCode("Call('user_fn')", Call(StringL("user_fn"), None))
     assertBuildFromCode(
-      "Call('user_fn2', {x: 1, y: 2})",
+      "Call('user_fn2', binding{x: 1, y: 2})",
       Call(StringL("user_fn2"), Some(ObjectL(Map("x" -> IntL(1), "y" -> IntL(2)))))
     )
 
@@ -145,7 +145,7 @@ class BasicFunctionsSpec extends ExprSuite {
     assertExpr(expr, "Let", 2, Arity.Exact(2), Effect.Pure)
 
     assertBuildFromCode(
-      "Let({'x': [2, 3, 5]},Add([Var('x')]))",
+      "Let(binding{'x': [2, 3, 5]},Add([Var('x')]))",
       Let(
         ObjectL(Map("x" -> ArrayL(List(IntL(2), IntL(3), IntL(5))))),
         Add(ArrayL(List(ArrayL(List(Var(StringL("x")))))))

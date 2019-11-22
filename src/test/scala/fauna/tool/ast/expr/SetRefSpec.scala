@@ -30,14 +30,8 @@ class SetRefFunctionSpec extends ExprSuite {
     )
   }
 
-  abstract class AbstractMatch(
-    `match`: Expr,
-    index: Option[Expr],
-    terms: Option[Expr]
-  ) extends FnExpr
-
   test("Match()") {
-    val expr = Match(`match` = NullL)
+    val expr = Match(`match` = NullL, None, None)
     assertExpr(expr, "Match", 3, Arity.Between(1, 3), Effect.Pure)
   }
 
