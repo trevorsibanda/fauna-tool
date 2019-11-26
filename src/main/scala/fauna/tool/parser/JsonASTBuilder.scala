@@ -31,15 +31,15 @@ import org.json4s.JsonAST.{
 class JsonASTBuilder() extends ASTBuilder[JValue] {
 
   override def matchKeys(value: JValue, classAccessors: Accessors): Boolean = {
-    val jKeys = value.asInstanceOf[JObject].values.keySet
-    val caOptKeys = classAccessors.collect { case (n: String, b: Boolean) if b => n }.toSet
-    val caRequiredKeys = classAccessors.collect {
-      case (n: String, b: Boolean) if !b => n
-    }.toSet
+    val jKeys = value.asInstanceOf[JObject].values.keys.toList
+    val (caRequiredKeys, caOptKeys) = classAccessors.partitionMap {case (n: String, b: Boolean) => if(b) Right(n) else Left(n)  }
+    val allcaKeys = caRequiredKeys.union(caOptKeys)
 
-    val additional = jKeys.diff(caRequiredKeys)
-    additional.diff(caOptKeys).isEmpty
-
+    allcaKeys.diff(jKeys) match{
+      case Nil => true
+      case l: List[String] if l.diff(caOptKeys).isEmpty => true
+      case _   => false
+    }
   }
 
   override def build(json: JValue): Expr = json match {
