@@ -140,6 +140,8 @@ class LogsMonitor(config: LogsMonitorConfig) {
   def loadFilters(cfg: LogsMonitorConfig): List[Filter] = {
     val lb = new mutable.ListBuffer[Filter]()
 
+    lb.addOne(QueryIsHTTPRequestFilter())
+
     if (!cfg.filterDrivers.isEmpty) {
       lb.addOne(QueryDriverFilter(cfg.filterDrivers))
     }
@@ -300,7 +302,7 @@ object LogsMonitor {
       .abbr("cg")
       .valueName("<code generator>")
       .action((x, c) => c.copy(logs = c.logs.copy(codegen = x)))
-      .text("Available code generators: js,curl"),
+      .text("Available code generators: js,curl,python,go"),
     p.opt[String]("filter-drivers")
       .abbr("fd")
       .valueName("<drivers>")

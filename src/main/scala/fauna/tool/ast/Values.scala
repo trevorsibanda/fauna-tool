@@ -13,7 +13,7 @@ case class SetV(`@set`: Expr) extends FaunaValue {
 case class BytesV(`@bytes`: Expr) extends FaunaValue {
 
   override def build[T](value: T)(implicit bf: ASTBuilder[T]): Expr =
-    BytesV(bf.buildChild(value, "@set"))
+    BytesV(bf.buildChild(value, "@bytes"))
 }
 
 case class QueryV(`@query`: Expr) extends FaunaValue {

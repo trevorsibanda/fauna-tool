@@ -33,12 +33,12 @@ import fauna.tool.ast.UnknownExpression
 
 import com.typesafe.scalalogging.Logger
 import scala.util.Try
-import fauna.tool.ast.ObjectExpr
+import fauna.tool.ast.Add
 
 case class GeneratorException(msg: String) extends Exception(msg)
 
 case class CodeGenConfig(
-  input: String = "",
+  input: String = "--",
   eval: String = "",
   format: String = "fql",
   codegen: String = "js",
@@ -170,10 +170,10 @@ object Generator {
         case "fql"  => Expr.build(line)(bf.asInstanceOf[ASTBuilder[String]])
         case "json" => Expr.build(parse(line))(bf.asInstanceOf[ASTBuilder[JValue]])
         case "rand" => {
-          val e: Expr = ObjectExpr(NullL);
+          val e: Expr = Add(NullL);
           val r = Expr.build(e)(bf.asInstanceOf[ASTBuilder[Expr]]);
           r match {
-            case ObjectExpr(obj) => obj
+            case Add(obj) => obj
             case _               => r
           }
         }
@@ -193,18 +193,17 @@ object Generator {
   ): Seq[scopt.OptionDef[_, AppConfig]] = Seq(
     p.opt[String]("eval")
       .valueName("<query>")
-      .action((x, c) => c.copy(generator = c.generator.copy(eval = x)))
+      .action((x, c) => c.copy(generator = c.generator.copy(eval = x, input = "eval")))
       .text("Query in form of raw json or fql"),
     p.opt[String]('i', "input")
       .valueName("<file|query>")
       .action((x, c) => c.copy(generator = c.generator.copy(input = x)))
-      .text("Path to input file. Use -- for stdin")
-      .withFallback(() => "--"),
+      .text("Path to input file. Use -- for stdin"),
     p.opt[String]("codegenerator")
       .abbr("cg")
       .valueName("<code generator>")
       .action((x, c) => c.copy(generator = c.generator.copy(codegen = x)))
-      .text("Available code generators: js,curl")
+      .text("Available code generators: js,curl,go,python")
       .withFallback(() => "js"),
     p.opt[String]('f', "format")
       .valueName("<format>")

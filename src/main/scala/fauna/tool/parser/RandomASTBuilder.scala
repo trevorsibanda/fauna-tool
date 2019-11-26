@@ -9,8 +9,6 @@ import fauna.tool.ast.{
 import fauna.tool.fuzzer.BasicRandGen
 
 import scala.util.Random
-import fauna.tool.ast.TrueL
-import fauna.tool.ast.FalseL
 
 class RandomASTBuilder(maxDepth: Int = 1) extends ASTBuilder[Expr] {
 
@@ -37,9 +35,6 @@ class RandomASTBuilder(maxDepth: Int = 1) extends ASTBuilder[Expr] {
   override def buildOpt(value: Expr): Option[Expr] = ???
 
   override def build(value: Expr): Expr = value match {
-    case NullL      => NullL
-    case TrueL      => TrueL
-    case FalseL     => FalseL
     case l: Literal => l
     case e: Expr    => e.build(e)(this)
   }
