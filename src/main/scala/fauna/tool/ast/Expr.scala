@@ -187,7 +187,7 @@ object Expr {
     BytesV(NullL),
     TimestampV(NullL),
     Ref2(NullL, None, None),
-    Ref(NullL),  
+    Ref(NullL),
     Let(NullL, NullL),
     ForEach(NullL, NullL),
     Merge(NullL, NullL, None),
@@ -387,7 +387,6 @@ object Expr {
     //case class Ref(ref, id, scope: Option[Expr])
     ,
     Database(NullL, None),
-    
     Collection(NullL, None),
     Function(NullL, None),
     Role(NullL, None)

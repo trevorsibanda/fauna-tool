@@ -15,8 +15,6 @@ case class Events(events: Expr) extends FnExpr {
     Events(bf.buildChild(value, "events"))
 }
 
-
-
 case class Match(
   `match`: Expr,
   terms: Option[Expr]

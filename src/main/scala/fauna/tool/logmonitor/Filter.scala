@@ -11,8 +11,10 @@ trait Filter {
   def apply(entry: LogEntry, expr: Option[Expr]): Boolean
 }
 
-case class QueryIsHTTPRequestFilter() extends Filter{
-  override def apply(entry: LogEntry, expr: Option[Expr]): Boolean = entry.request.path == "/" && entry.request.method == "POST"
+case class QueryIsHTTPRequestFilter() extends Filter {
+
+  override def apply(entry: LogEntry, expr: Option[Expr]): Boolean =
+    entry.request.path == "/" && entry.request.method == "POST"
 }
 
 case class HttpResponseFilter(code: Int) extends Filter {

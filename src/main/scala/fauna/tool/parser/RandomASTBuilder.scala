@@ -1,10 +1,6 @@
 package fauna.tool.parser
 
-import fauna.tool.ast.{
-  Expr,
-  Literal,
-  NullL
-}
+import fauna.tool.ast.{ Expr, Literal, NullL }
 
 import fauna.tool.fuzzer.BasicRandGen
 

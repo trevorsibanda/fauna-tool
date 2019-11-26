@@ -32,13 +32,15 @@ class JsonASTBuilder() extends ASTBuilder[JValue] {
 
   override def matchKeys(value: JValue, classAccessors: Accessors): Boolean = {
     val jKeys = value.asInstanceOf[JObject].values.keys.toList
-    val (caRequiredKeys, caOptKeys) = classAccessors.partitionMap {case (n: String, b: Boolean) => if(b) Right(n) else Left(n)  }
+    val (caRequiredKeys, caOptKeys) = classAccessors.partitionMap {
+      case (n: String, b: Boolean) => if (b) Right(n) else Left(n)
+    }
     val allcaKeys = caRequiredKeys.union(caOptKeys)
 
-    allcaKeys.diff(jKeys) match{
-      case Nil => true
+    allcaKeys.diff(jKeys) match {
+      case Nil                                          => true
       case l: List[String] if l.diff(caOptKeys).isEmpty => true
-      case _   => false
+      case _                                            => false
     }
   }
 

@@ -18,11 +18,11 @@ import fauna.tool.ast.{
 }
 import fauna.tool.ast.{ BytesV, DateV, QueryV, SetV, TimestampV }
 import fauna.tool.ast.{
+  Classes,
   Collections,
   Databases,
   Functions,
   Indexes,
-  Classes,
   Keys,
   Logout,
   NewID,
@@ -96,9 +96,9 @@ trait Generator {
         blockComment(s"UnknownExpression($jvalue)")
       }
     }
-    case e @ (Databases(NullL) | Collections(NullL) | Classes(NullL) | Indexes(NullL) | Keys(NullL) |
-        Tokens(NullL) | Functions(NullL) | Logout(NullL) | NewID(NullL) |
-        NextID(NullL)) =>
+    case e @ (Databases(NullL) | Collections(NullL) | Classes(NullL) |
+        Indexes(NullL) | Keys(NullL) | Tokens(NullL) | Functions(NullL) |
+        Logout(NullL) | NewID(NullL) | NextID(NullL)) =>
       s"${fnName(e.name)}()"
     case fv: FaunaValue => faunaValueToCode(fv)
     case l: Literal     => literalToCode(l)
@@ -175,7 +175,7 @@ object Generator {
           val r = Expr.build(e)(bf.asInstanceOf[ASTBuilder[Expr]]);
           r match {
             case Add(obj) => obj
-            case _               => r
+            case _        => r
           }
         }
       }
@@ -194,7 +194,9 @@ object Generator {
   ): Seq[scopt.OptionDef[_, AppConfig]] = Seq(
     p.opt[String]("eval")
       .valueName("<query>")
-      .action((x, c) => c.copy(generator = c.generator.copy(eval = x, input = "eval")))
+      .action(
+        (x, c) => c.copy(generator = c.generator.copy(eval = x, input = "eval"))
+      )
       .text("Query in form of raw json or fql"),
     p.opt[String]('i', "input")
       .valueName("<file|query>")
