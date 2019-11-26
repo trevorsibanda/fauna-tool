@@ -22,6 +22,7 @@ import fauna.tool.ast.{
   Databases,
   Functions,
   Indexes,
+  Classes,
   Keys,
   Logout,
   NewID,
@@ -95,7 +96,7 @@ trait Generator {
         blockComment(s"UnknownExpression($jvalue)")
       }
     }
-    case e @ (Databases(NullL) | Collections(NullL) | Indexes(NullL) | Keys(NullL) |
+    case e @ (Databases(NullL) | Collections(NullL) | Classes(NullL) | Indexes(NullL) | Keys(NullL) |
         Tokens(NullL) | Functions(NullL) | Logout(NullL) | NewID(NullL) |
         NextID(NullL)) =>
       s"${fnName(e.name)}()"

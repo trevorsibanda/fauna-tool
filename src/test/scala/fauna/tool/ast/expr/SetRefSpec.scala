@@ -31,8 +31,8 @@ class SetRefFunctionSpec extends ExprSuite {
   }
 
   test("Match()") {
-    val expr = Match(`match` = NullL, None, None)
-    assertExpr(expr, "Match", 3, Arity.Between(1, 3), Effect.Pure)
+    val expr = Match(`match` = NullL, None)
+    assertExpr(expr, "Match", 2, Arity.Between(1, 2), Effect.Pure)
   }
 
   test("Union()") {

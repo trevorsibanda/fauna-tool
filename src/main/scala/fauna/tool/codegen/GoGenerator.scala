@@ -14,8 +14,6 @@ class GolangCodeGenerator extends JSCodeGenerator {
 
   override def exprToCode(expr: Expr): Code = expr match {
     case Let(bindings, in) => letBuilder(bindings, in)
-    case Match(mtch, index, terms) if (index.isDefined || terms.isDefined) =>
-      s"${fnName("MatchTerms")}(${exprToCode(mtch)}, ${exprToCode(index.getOrElse(terms.get))})"
 
     case FindStr(findstr, find, start) if start.isDefined =>
       s"${fnName("FindStr")}(${exprToCode(findstr)}, ${exprToCode(find)}, ${fnName("Start")}(${exprToCode(start.get)}))"

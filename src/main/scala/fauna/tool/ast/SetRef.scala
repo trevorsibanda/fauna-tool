@@ -19,14 +19,12 @@ case class Events(events: Expr) extends FnExpr {
 
 case class Match(
   `match`: Expr,
-  index: Option[Expr],
   terms: Option[Expr]
 ) extends FnExpr {
 
   override def build[T](value: T)(implicit bf: ASTBuilder[T]): Expr =
     Match(
       bf.buildChild(value, "match"),
-      bf.buildChildOpt(value, "index"),
       bf.buildChildOpt(value, "terms")
     )
 }
