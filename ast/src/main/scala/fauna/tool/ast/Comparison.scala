@@ -83,50 +83,50 @@ object Contains {
     Contains(bf.buildChild(value, "contains"), bf.buildChild(value, "in"))
 }
 
-case class ContainsPath(contains_path: Expr, path: Expr) extends Expr {
+case class ContainsPath(contains_path: Expr, in: Expr) extends Expr {
   override val formKeys = ContainsPath.formKeys
 }
 
 object ContainsPath {
 
   val formKeys: List[Form.Key] =
-    List("contains_path", "path").map(Form.Key.Required(_))
+    List("contains_path", "in").map(Form.Key.Required(_))
   Form.add("ContainsPath", build _, formKeys: _*)
 
   def build[T](value: T, bf: Builder[T]): Expr =
-    Contains(bf.buildChild(value, "contains_path"), bf.buildChild(value, "path"))
+    Contains(bf.buildChild(value, "contains_path"), bf.buildChild(value, "in"))
 }
 
-case class ContainsValue(contains_value: Expr, value: Expr) extends Expr {
+case class ContainsValue(contains_value: Expr, in: Expr) extends Expr {
   override val formKeys = ContainsValue.formKeys
 }
 
 object ContainsValue {
 
   val formKeys: List[Form.Key] =
-    List("contains_value", "value").map(Form.Key.Required(_))
+    List("contains_value", "in").map(Form.Key.Required(_))
   Form.add("ContainsValue", build _, formKeys: _*)
 
   def build[T](value: T, bf: Builder[T]): Expr =
     ContainsValue(
       bf.buildChild(value, "contains_value"),
-      bf.buildChild(value, "value")
+      bf.buildChild(value, "in")
     )
 }
 
-case class ContainsField(contains_field: Expr, field: Expr) extends Expr {
+case class ContainsField(contains_field: Expr, in: Expr) extends Expr {
   override val formKeys = ContainsField.formKeys
 }
 
 object ContainsField {
 
   val formKeys: List[Form.Key] =
-    List("contains_field", "field").map(Form.Key.Required(_))
+    List("contains_field", "in").map(Form.Key.Required(_))
   Form.add("ContainsField", build _, formKeys: _*)
 
   def build[T](value: T, bf: Builder[T]): Expr =
     ContainsField(
       bf.buildChild(value, "contains_field"),
-      bf.buildChild(value, "field")
+      bf.buildChild(value, "in")
     )
 }
