@@ -28,7 +28,7 @@ object Generator {
     implicit val bf = "json" match {
       case "fql"  => new fauna.tool.parser.FQLBuilder()
       case "json" => new fauna.tool.parser.JsonBuilder()
-      case "rand" => new fauna.tool.parser.RandomBuilder(0)
+      //case "rand" => new fauna.tool.parser.RandomBuilder(0)
     }
     Expr.init
 
@@ -90,7 +90,7 @@ object Generator {
     implicit val bf = config.format match {
       case "fql"  => new fauna.tool.parser.FQLBuilder()
       case "json" => new fauna.tool.parser.JsonBuilder()
-      case "rand" => new fauna.tool.parser.RandomBuilder(0)
+      //case "rand" => new fauna.tool.parser.RandomBuilder(0)
     }
     Expr.init
 

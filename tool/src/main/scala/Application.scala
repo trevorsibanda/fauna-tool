@@ -32,11 +32,11 @@ object Application {
     cmd("view_error").action((_, c) => { c.copy(command = "view_error") })
 
     cmd("validate").text("Basic query validator").hidden()
-    /*
+
     cmd("coverage")
       .children(Coverage.parserOpts(self): _*)
       .action((_, c) => { c.copy(command = "coverage") })
-   */
+
   }
 
   def main(args: Array[String]) = {

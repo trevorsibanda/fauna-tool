@@ -19,7 +19,7 @@ class uJsonSerializer extends fauna.tool.ast.Serializer[Value] {
   def readValuePath(v: Value, path: Seq[String]): Option[Value] =
     Try {
       path.foldLeft(v)((accum, pos) => {
-        //support numeric array indexes by attempting to typecast to int 
+        //support numeric array indexes by attempting to typecast to int
         pos.toIntOption.fold(accum(pos))(int => accum(int))
       })
     }.toOption

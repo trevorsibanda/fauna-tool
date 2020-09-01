@@ -26,7 +26,7 @@ class DriverCoverage(config: CoverageConfig) {
        config.include
      else config.include.diff(config.exclude)) :+ "other"
 
-  private val hitCounter: immutable.Map[String, mutable.Map[String, Int]] =
+  private val histogram: immutable.Map[String, mutable.Map[String, Int]] =
     driverTargets.map { s: String =>
       (s, mutable.Map.empty[String, Int])
     }.toMap
@@ -51,7 +51,7 @@ class DriverCoverage(config: CoverageConfig) {
   }
 
   def addHit(driver: String, expr: Expr) = {
-    val entry = hitCounter.getOrElse(driver, hitCounter("other"))
+    val entry = histogram.getOrElse(driver, histogram("other"))
     val count = entry.getOrElseUpdate(expr.name, -1)
     entry.update(expr.name, count + 1)
   }
@@ -78,8 +78,8 @@ class DriverCoverage(config: CoverageConfig) {
   def showResults() = {
     println("Coverage results:\n===========================\n")
     driverTargets.map { driver: String =>
-      val uniqueHits: Double = hitCounter(driver).values.filter(_ > 0).size
-      val totalExprs: Double = hitCounter(driver).size
+      val uniqueHits: Double = histogram(driver).values.filter(_ > 0).size
+      val totalExprs: Double = histogram(driver).size
       val percent = 100.0 * (uniqueHits / totalExprs)
       val pbar = (0 to percent.toInt)
         .map(i => fansi.Back.True(0, (127 + (i * 1.28)).toInt, 0)(" "))
@@ -91,7 +91,7 @@ class DriverCoverage(config: CoverageConfig) {
         s"${driver.toUpperCase.padTo(10, ' ')}  ${pbar}${npbar}  ${percent.ceil}% cov \n"
       )
       if (config.verboseReport || driverTargets.length == 1)
-        detailedReport(driver, hitCounter(driver))
+        detailedReport(driver, histogram(driver))
       println("\n\n")
     }
   }

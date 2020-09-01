@@ -55,16 +55,25 @@ object Library {
       .getOrElse(noPayloadError)
 
   @JSExportTopLevel("highlightError")
-  def highlightError(lang: String, method: String, wire: String, errors: js.Array[js.Dictionary[String]]): js.Array[js.Dictionary[String]] = Try{
-    errors.collect{
-      case dict: js.Dictionary[String] if Seq("code", "description", "position").filterNot(dict.isDefinedAt).isEmpty => 
-      val pos = (dict("position").asInstanceOf[js.Array[scala.Any]]).collect{
-        case s: String  => s
-        case i: Int     => i.toString
+  def highlightError(
+    lang: String,
+    method: String,
+    wire: String,
+    errors: js.Array[js.Dictionary[String]]
+  ): js.Array[js.Dictionary[String]] =
+    Try {
+      errors.collect {
+        case dict: js.Dictionary[String]
+            if Seq("code", "description", "position")
+              .filterNot(dict.isDefinedAt)
+              .isEmpty =>
+          val pos = (dict("position").asInstanceOf[js.Array[scala.Any]]).collect {
+            case s: String => s
+            case i: Int    => i.toString
+          }
+          highlightError(lang, method, wire, pos, dict("code"), dict("description"))
       }
-      highlightError(lang, method, wire, pos , dict("code"), dict("description"))
-    }
-  }.recover({
+    }.recover({
         case e: JsErrorException => js.Array(e.error)
         case _: Exception        => js.Array(internalError)
       })
@@ -85,13 +94,16 @@ object Library {
         case (_, null) => js.Dictionary(("error", "Error has no position"))
         case (input, pos) => {
           val serializer = new fauna.tool.parser.uJsonSerializer()
-          (serializer.readValuePath(
-            serializer.valueFromString(input).get,
-            position.toSeq
-          ), serializer.readValuePath(
-            serializer.valueFromString(input).get,
-            if(position.isEmpty) position.toSeq else position.toSeq.init
-          )) match {
+          (
+            serializer.readValuePath(
+              serializer.valueFromString(input).get,
+              position.toSeq
+            ),
+            serializer.readValuePath(
+              serializer.valueFromString(input).get,
+              if (position.isEmpty) position.toSeq else position.toSeq.init
+            )
+          ) match {
             case (Some(jValue), Some(highlight)) => {
               val builder = new fauna.tool.parser.JsonBuilder()
               val cgen = getCodegen(lang)
@@ -127,30 +139,31 @@ object Library {
       .getOrElse(internalError)
 
   @JSExportTopLevel("queryEffect")
-  def effect(params: js.Dictionary[String]): js.Dictionary[String] = Try{
-    Expr.init
-    val wire: String = params("wire")
-    val format: String = params.getOrElse("format", "fql")
-    val targetLang: String = params.getOrElse("lang", "js")
+  def effect(params: js.Dictionary[String]): js.Dictionary[String] =
+    Try {
+      Expr.init
+      val wire: String = params("wire")
+      val format: String = params.getOrElse("format", "fql")
+      val targetLang: String = params.getOrElse("lang", "js")
 
-    implicit val builder = format.toLowerCase match {
-      case "fql"  => new fauna.tool.parser.FQLBuilder()
-      case "json" => new fauna.tool.parser.JsonBuilder()
-    }
+      implicit val builder = format.toLowerCase match {
+        case "fql"  => new fauna.tool.parser.FQLBuilder()
+        case "json" => new fauna.tool.parser.JsonBuilder()
+      }
 
-    val cgen = getCodegen(targetLang)
+      val cgen = getCodegen(targetLang)
 
-    val expr: Expr = builder.build(wire)
-    val code = cgen.exprToCode(expr)
-    val eff = expr.effect.toString
+      val expr: Expr = builder.build(wire)
+      val code = cgen.exprToCode(expr)
+      val eff = expr.effect.toString
 
-    js.Dictionary("code"-> code, "effect" -> eff, "wire" -> wire)
+      js.Dictionary("code" -> code, "effect" -> eff, "wire" -> wire)
 
-  }.recover({
-      case e: JsErrorException => e.error
-      case _: Exception        => internalError
-    })
-    .getOrElse(noPayloadError)
+    }.recover({
+        case e: JsErrorException => e.error
+        case _: Exception        => internalError
+      })
+      .getOrElse(noPayloadError)
 
   @JSExportTopLevel("optimizeQuery")
   def optimizeQuery(payload: String): js.Dictionary[String] = {
