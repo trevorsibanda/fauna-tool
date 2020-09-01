@@ -186,6 +186,20 @@ object CreateRole {
 
 }
 
+case class CreateAccessProvider(create_access_provider: Expr) extends Expr {
+  override val formKeys = CreateAccessProvider.formKeys
+}
+
+object CreateAccessProvider {
+
+  val formKeys: List[Form.Key] =
+    List("create_access_provider").map(Form.Key.Required(_))
+  Form.add("CreateAccessProvider", build _, formKeys: _*)
+
+  def build[T](value: T, bf: Builder[T]): Expr =
+    CreateAccessProvider(bf.buildChild(value, "create_access_provider"))
+}
+
 case class Insert(
   insert: Expr,
   ts: Expr,

@@ -193,3 +193,17 @@ object Join {
   def build[T](value: T, bf: Builder[T]): Expr =
     Join(bf.buildChild(value, "join"), bf.buildChild(value, "with"))
 }
+
+case class Reverse(reverse: Expr) extends Expr {
+  override val formKeys = Reverse.formKeys
+
+  override def effect: Effect = effect(Effect.Read)
+}
+
+object Reverse {
+  val formKeys: List[Form.Key] = List("reverse").map(Form.Key.Required(_))
+  Form.add("Reverse", build _, formKeys: _*)
+
+  def build[T](value: T, bf: Builder[T]): Expr =
+    Reverse(bf.buildChild(value, "reverse"))
+}

@@ -158,6 +158,42 @@ object Role {
     Role(bf.buildChild(value, "role"), bf.buildChildOpt(value, "scope"))
 }
 
+case class AccessProvider(
+  access_provider: Expr,
+  scope: Option[Expr]
+) extends Expr {
+  override val formKeys = AccessProvider.formKeys
+}
+
+object AccessProvider {
+
+  val formKeys: List[Form.Key] =
+    List(Form.Key.Required("access_provider"), Form.Key.Optional("scope"))
+  Form.add("AccessProvider", build _, formKeys: _*)
+
+  def build[T](value: T, bf: Builder[T]): Expr =
+    AccessProvider(
+      bf.buildChild(value, "access_provider"),
+      bf.buildChildOpt(value, "scope")
+    )
+}
+
+case class AccessProviders(
+  access_providers: Expr
+) extends Expr {
+  override val formKeys = AccessProviders.formKeys
+}
+
+object AccessProviders {
+
+  val formKeys: List[Form.Key] =
+    List(Form.Key.Required("access_providers"))
+  Form.add("AccessProviders", build _, formKeys: _*)
+
+  def build[T](value: T, bf: Builder[T]): Expr =
+    AccessProviders(bf.buildChild(value, "access_providers"))
+}
+
 //deprecated, use new_id
 
 case class NextID(next_id: Expr) extends Expr {

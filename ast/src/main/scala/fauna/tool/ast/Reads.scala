@@ -52,6 +52,21 @@ object KeyFromSecret {
 
 }
 
+case class Documents(documents: Expr) extends Expr {
+  override val formKeys = Documents.formKeys
+
+  override def effect: Effect = effect(Effect.Read)
+}
+
+object Documents {
+  val formKeys: List[Form.Key] = List("documents").map(Form.Key.Required(_))
+  Form.add("Documents", build _, formKeys: _*)
+
+  def build[T](value: T, bf: Builder[T]): Expr =
+    Documents(bf.buildChild(value, "documents"))
+
+}
+
 case class Paginate(
   val paginate: Expr,
   val before: Option[Expr],

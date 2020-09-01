@@ -35,27 +35,34 @@ object Form {
     if (opt.isEmpty) {
       val keys = keySet.map(_.key).toSet
       routes.put(keys, builder)
-      fnNameKeyMap.put(name.toLowerCase, fnNameKeyMap.getOrElse(name, Nil) ++ Seq(keys))
+      fnNameKeyMap.put(
+        name.toLowerCase,
+        fnNameKeyMap.getOrElse(name, Nil) ++ Seq(keys)
+      )
     } else {
       val keys = required.map(_.key).toSet
       routes.put(keys, builder)
-      fnNameKeyMap.put(name.toLowerCase, fnNameKeyMap.getOrElse(name, Nil) ++ Seq(keys))
+      fnNameKeyMap.put(
+        name.toLowerCase,
+        fnNameKeyMap.getOrElse(name, Nil) ++ Seq(keys)
+      )
       (1 to opt.length).foreach { i =>
         opt.combinations(i).foreach { c: List[Form.Key] =>
           val keys = (required ++ c).map(_.key).toSet
           routes.put(keys, builder)
-          fnNameKeyMap.put(name.toLowerCase, fnNameKeyMap.getOrElse(name, Nil) ++ Seq(keys))
+          fnNameKeyMap
+            .put(name.toLowerCase, fnNameKeyMap.getOrElse(name, Nil) ++ Seq(keys))
         }
       }
     }
-    println(routes)
   }
 
   def matches(keys: Set[String]): Option[FormBuilder[scala.Any]] = {
     routes.get(keys)
   }
 
-  def functionKeys(name: String): Option[Seq[Keys]] = fnNameKeyMap.get(name.toLowerCase)
+  def functionKeys(name: String): Option[Seq[Keys]] =
+    fnNameKeyMap.get(name.toLowerCase)
 
   def matchesArguments(
     fnName: String,

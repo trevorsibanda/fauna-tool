@@ -54,7 +54,7 @@ trait Generator {
     }
     case e @ (Databases(NullL) | Collections(NullL) | Classes(NullL) |
         Indexes(NullL) | Keys(NullL) | Tokens(NullL) | Functions(NullL) |
-        Logout(NullL) | NewID(NullL) | NextID(NullL)) =>
+        Logout(NullL) | NewID(NullL) | NextID(NullL) | AccessProviders(NullL)) =>
       s"${fnName(e.name)}()"
     case fv: FaunaValue => faunaValueToCode(fv)
     case l: Literal     => literalToCode(l)
