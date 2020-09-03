@@ -98,7 +98,7 @@ case class Merge(
 object Merge {
 
   val formKeys
-    : List[Form.Key] = List("merge", "lambda").map(Form.Key.Required(_)) ++ List(
+    : List[Form.Key] = List("merge", "with").map(Form.Key.Required(_)) ++ List(
     Form.Key.opt("lambda")
   )
   Form.add("Merge", build _, formKeys: _*)

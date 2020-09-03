@@ -94,7 +94,7 @@ object ContainsPath {
   Form.add("ContainsPath", build _, formKeys: _*)
 
   def build[T](value: T, bf: Builder[T]): Expr =
-    Contains(bf.buildChild(value, "contains_path"), bf.buildChild(value, "in"))
+    ContainsPath(bf.buildChild(value, "contains_path"), bf.buildChild(value, "in"))
 }
 
 case class ContainsValue(contains_value: Expr, in: Expr) extends Expr {

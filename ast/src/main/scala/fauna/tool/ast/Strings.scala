@@ -207,30 +207,6 @@ object LTrim {
     LTrim(bf.buildChild(value, "ltrim"))
 }
 
-case class NGram(
-  ngram: Expr,
-  min: Option[Expr],
-  max: Option[Expr]
-) extends Expr {
-  override val formKeys = NGram.formKeys
-}
-
-object NGram {
-
-  val formKeys: List[Form.Key] = List(Form.Key.Required("ngram")) ++ List(
-    "min",
-    "max"
-  ).map(Form.Key.Optional(_))
-  Form.add("NGram", build _, formKeys: _*)
-
-  def build[T](value: T, bf: Builder[T]): Expr =
-    NGram(
-      bf.buildChild(value, "ngram"),
-      bf.buildChildOpt(value, "min"),
-      bf.buildChildOpt(value, "max")
-    )
-}
-
 case class Repeat(
   repeat: Expr,
   number: Option[Expr]

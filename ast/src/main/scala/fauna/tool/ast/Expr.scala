@@ -172,7 +172,6 @@ object Expr {
     Length(NullL),
     LowerCase(NullL),
     LTrim(NullL),
-    NGram(NullL, None, None),
     Repeat(NullL, None),
     ReplaceStr(NullL, NullL, NullL),
     ReplaceStrRegex(NullL, NullL, NullL, None),
